@@ -1,0 +1,196 @@
+																																																																																																																																			
+Q	L	Perfil	1	Indique seu perfil.		pt-BR		Y	N		1																	1																																																																																						1						1																	
+A	0	SDOC		Servidor(a) Docente.		pt-BR																																																																																																																																			
+A	0	STAE		Servidor(a) TAE  (Técnico-administrativo em Educação) 		pt-BR																																																																																																																																			
+Q	L	Campus	1	Indique o campus da UFJF no qual atua.		pt-BR		Y	N		1																	1																																																																																						1						1																	
+A	0	UFGV		UFJF - Campus Governador Valadares		pt-BR																																																																																																																																			
+A	0	UFJF		UFJF - Campus Juiz de Fora		pt-BR																																																																																																																																			
+A	0	J23		Colégio de Aplicação João XXIII		pt-BR																																																																																																																																			
+Q	!	LOTACAO	1	Selecione o Setor/Unidade ao qual se vincula.		pt-BR		Y	N		1																																																																																																							1						1																	
+A	0	Adm		Setor administrativo ligado à Administração Superior (Reitoria; Pró-Reitorias; Diretorias; Órgãos Suplementares)		pt-BR																																																																																																																																			
+A	0	ICV		Instituto de Ciências da Vida (ICV) – Governador Valadares		pt-BR																																																																																																																																			
+A	0	ICSA		Instituto de Ciências Sociais Aplicadas (ICSA) – Governador Valadares		pt-BR																																																																																																																																			
+A	0	JXX		Colégio de Aplicação João XXIII		pt-BR																																																																																																																																			
+A	0	IAD		IAD – Instituto de Artes e Design		pt-BR																																																																																																																																			
+A	0	ICB		ICB – Instituto de Ciências Biológicas		pt-BR																																																																																																																																			
+A	0	ICE		ICE – Instituto de Ciências Exatas		pt-BR																																																																																																																																			
+A	0	ICH		ICH – Instituto de Ciências Humanas		pt-BR																																																																																																																																			
+A	0	FACC		Faculdade de Administração e Ciências Contábeis		pt-BR																																																																																																																																			
+A	0	FAU		Faculdade de Arquitetura e Urbanismo		pt-BR																																																																																																																																			
+A	0	FACOM		Faculdade de Comunicação Social		pt-BR																																																																																																																																			
+A	0	FAD		Faculdade de Direito		pt-BR																																																																																																																																			
+A	0	FAEC		Faculdade de Economia		pt-BR																																																																																																																																			
+A	0	FAED		Faculdade de Educação		pt-BR																																																																																																																																			
+A	0	FACED		Faculdade de Educação Física		pt-BR																																																																																																																																			
+A	0	FAEM		Faculdade de Enfermagem		pt-BR																																																																																																																																			
+A	0	FAEN		Faculdade de Engenharia		pt-BR																																																																																																																																			
+A	0	FARM		Faculdade de Farmácia		pt-BR																																																																																																																																			
+A	0	FISIO		Faculdade de Fisioterapia		pt-BR																																																																																																																																			
+A	0	FALE		Faculdade de Letras		pt-BR																																																																																																																																			
+A	0	FAMED		Faculdade de Medicina		pt-BR																																																																																																																																			
+A	0	ODONT		Faculdade de Odontologia		pt-BR																																																																																																																																			
+A	0	FASOC		Faculdade de Serviço Social		pt-BR																																																																																																																																			
+A	0	HU		Hospital Universitário		pt-BR																																																																																																																																			
+A	0	Outra		Outra		pt-BR																																																																																																																																			
+G	G1	Dimensão 5 - Políticas de Pessoal	1	LEIA AS ORIENTAÇÕES GERAIS ANTES DE INICIAR O PREENCHIMENTO: (i) Considere exclusivamente o ano de 2024; (ii) Em cada uma das questões, indique seu grau de concordância com as afirmativas apresentadas, em que sua percepção irá variar de "discordo totalmente" a "concordo totalmente". Caso não se enquadre na situação perguntada ou não saiba responder, marque a opção "Não sei/Não se aplica"; (iii) Se estiver respondendo pelo celular, deixe a tela na HORIZONTAL para que possa visualizar todas as opções de resposta.		pt-BR																																																																																																																																			
+Q	L	CAP	1	As oportunidades de capacitação oferecidas aos servidores da UFJF são satisfatórias (ex. cursos de línguas estrangeiras, cursos de capacitação internos e externos, etc.)		pt-BR		Y	N		1																	1																																																																																						1						1																	
+A	0	DT		Discordo totalmente		pt-BR																																																																																																																																			
+A	0	D		Discordo		pt-BR																																																																																																																																			
+A	0	NCND		Não concordo nem discordo		pt-BR																																																																																																																																			
+A	0	C		Concordo		pt-BR																																																																																																																																			
+A	0	CT		Concordo totalmente		pt-BR																																																																																																																																			
+A	0	NSA		Não sei / Não se aplica		pt-BR																																																																																																																																			
+Q	L	Proquali	1	Os programas de qualificação profissional para os servidores da UFJF são satisfatórios (Proquali, Programa de reserva de vagas para servidores).		pt-BR		Y	N		1																	1																																																																																						1						1																	
+A	0	DT		Discordo totalmente		pt-BR																																																																																																																																			
+A	0	D		Discordo		pt-BR																																																																																																																																			
+A	0	NCND		Não concordo nem discordo		pt-BR																																																																																																																																			
+A	0	C		Concordo		pt-BR																																																																																																																																			
+A	0	CT		Concordo totalmente		pt-BR																																																																																																																																			
+A	0	NSA		Não sei / Não se aplica		pt-BR																																																																																																																																			
+Q	L	Acoesdesenv	1	A qualidade das ações de desenvolvimento e/ou cursos promovidos pela UFJF dos quais participei foi satisfatória (ex.: simpósios, congressos, cursos, etc.).		pt-BR		Y	N		1																	1																																																																																						1						1																	
+A	0	DT		Discordo totalmente		pt-BR																																																																																																																																			
+A	0	D		Discordo		pt-BR																																																																																																																																			
+A	0	NCND		Não concordo nem discordo		pt-BR																																																																																																																																			
+A	0	C		Concordo		pt-BR																																																																																																																																			
+A	0	CT		Concordo totalmente		pt-BR																																																																																																																																			
+A	0	NSA		Não sei / Não se aplica		pt-BR																																																																																																																																			
+Q	L	Apoio	1	As ações, os incentivos e/ou outras formas de apoio para o desenvolvimento das funções dos servidores são satisfatórios (ex.: ações de desenvolvimento em serviço, horário especial para servidor estudante, etc.).		pt-BR		Y	N		1																	1																																																																																						1						1																	
+A	0	DT		Discordo totalmente		pt-BR																																																																																																																																			
+A	0	D		Discordo		pt-BR																																																																																																																																			
+A	0	NCND		Não concordo nem discordo		pt-BR																																																																																																																																			
+A	0	C		Concordo		pt-BR																																																																																																																																			
+A	0	CT		Concordo totalmente		pt-BR																																																																																																																																			
+A	0	NSA		Não sei / Não se aplica		pt-BR																																																																																																																																			
+Q	L	CHdocente	1	A distribuição de atividades e de carga horária entre os servidores docentes para atender as demandas do departamento no qual trabalho é satisfatória.		pt-BR		Y	N	BR	1																	1																																																																																						1						1																	
+A	0	DT		Discordo totalmente		pt-BR																																																																																																																																			
+A	0	D		Discordo		pt-BR																																																																																																																																			
+A	0	NCND		Não concordo nem discordo		pt-BR																																																																																																																																			
+A	0	C		Concordo		pt-BR																																																																																																																																			
+A	0	CT		Concordo totalmente		pt-BR																																																																																																																																			
+A	0	NSA		Não sei / Não se aplica		pt-BR																																																																																																																																			
+Q	L	CHTAE	1	A distribuição de atividades e de carga horária entre os servidores TAEs para atender as demandas do setor/departamento no qual trabalho é satisfatória.		pt-BR		Y	N		1																	1																																																																																						1						1																	
+A	0	DT		Discordo totalmente		pt-BR																																																																																																																																			
+A	0	D		Discordo		pt-BR																																																																																																																																			
+A	0	NCND		Não concordo nem discordo		pt-BR																																																																																																																																			
+A	0	C		Concordo		pt-BR																																																																																																																																			
+A	0	CT		Concordo totalmente		pt-BR																																																																																																																																			
+A	0	NSA		Não sei / Não se aplica		pt-BR																																																																																																																																			
+Q	L	Qualivida	1	As ações e as políticas de assistência e de melhoria da qualidade de vida dos servidores da UFJF são satisfatórias (ex.: Programa de Saúde Mental, Yoga e saúde, Programa de Preparação para Aposentadoria, etc.)		pt-BR		Y	N		1																	1																																																																																						1						1																	
+A	0	DT		Discordo totalmente		pt-BR																																																																																																																																			
+A	0	D		Discordo		pt-BR																																																																																																																																			
+A	0	NCND		Não concordo nem discordo		pt-BR																																																																																																																																			
+A	0	C		Concordo		pt-BR																																																																																																																																			
+A	0	CT		Concordo totalmente		pt-BR																																																																																																																																			
+A	0	NSA		Não sei / Não se aplica		pt-BR																																																																																																																																			
+Q	L	Saudeocupacional	1	As ações voltadas para a saúde ocupacional e segurança no trabalho dos servidores da UFJF são satisfatórias (ex.: Mapa de riscos ocupacionais, Insalubridade, etc.).		pt-BR		Y	N		1																	1																																																																																						1						1																	
+A	0	DT		Discordo totalmente		pt-BR																																																																																																																																			
+A	0	D		Discordo		pt-BR																																																																																																																																			
+A	0	NCND		Não concordo nem discordo		pt-BR																																																																																																																																			
+A	0	C		Concordo		pt-BR																																																																																																																																			
+A	0	CT		Concordo totalmente		pt-BR																																																																																																																																			
+A	0	NSA		Não sei / Não se aplica		pt-BR																																																																																																																																			
+Q	L	DivulCarreira	1	A divulgação e o conhecimento sobre o meu plano de carreira são satisfatórios (ex.: Progressão, Promoção, Retribuição por titulação, Incentivo à qualificação, etc.).		pt-BR		Y	N		1																	1																																																																																						1						1																	
+A	0	DT		Discordo totalmente		pt-BR																																																																																																																																			
+A	0	D		Discordo		pt-BR																																																																																																																																			
+A	0	NCND		Não concordo nem discordo		pt-BR																																																																																																																																			
+A	0	C		Concordo		pt-BR																																																																																																																																			
+A	0	CT		Concordo totalmente		pt-BR																																																																																																																																			
+A	0	NSA		Não sei / Não se aplica		pt-BR																																																																																																																																			
+Q	L	Ambiente	1	As condições do meu ambiente de trabalho são satisfatórias (relação interpessoal, clima organizacional, entre outros fatores relevantes para um ambiente saudável e produtivo).		pt-BR		Y	N		1																	1																																																																																						1						1																	
+A	0	DT		Discordo totalmente		pt-BR																																																																																																																																			
+A	0	D		Discordo		pt-BR																																																																																																																																			
+A	0	NCND		Não concordo nem discordo		pt-BR																																																																																																																																			
+A	0	C		Concordo		pt-BR																																																																																																																																			
+A	0	CT		Concordo totalmente		pt-BR																																																																																																																																			
+A	0	NSA		Não sei / Não se aplica		pt-BR																																																																																																																																			
+Q	L	Motivacao	1	Sinto-me motivado(a) para o trabalho na UFJF.		pt-BR		Y	N		1																	1																																																																																						1						1																	
+A	0	DT		Discordo totalmente		pt-BR																																																																																																																																			
+A	0	D		Discordo		pt-BR																																																																																																																																			
+A	0	NCND		Não concordo nem discordo		pt-BR																																																																																																																																			
+A	0	C		Concordo		pt-BR																																																																																																																																			
+A	0	CT		Concordo totalmente		pt-BR																																																																																																																																			
+A	0	NSA		Não sei / Não se aplica		pt-BR																																																																																																																																			
+G	G2	Dimensão 6 - Organização e gestão da instituição	1			pt-BR																																																																																																																																			
+Q	F	ORGCOL	1	Os órgãos colegiados da UFJF funcionam de forma satisfatória no que se refere à:	Você deverá dar uma resposta por linha.	pt-BR		Y	N		1																																																																																																							1																							
+SQ	0	DIVDEC	1	Divulgação das decisões dos órgãos colegiados (ex: Consu, Congrad, Congregações, Colegiados de Curso, etc.).		pt-BR																																																																																																																																			
+SQ	0	IMPLDEC	1	Implementação das decisões dos órgãos colegiados.		pt-BR																																																																																																																																			
+SQ	0	REPORGCOL	1	Representatividade dos diferentes segmentos nos órgãos colegiados.		pt-BR																																																																																																																																			
+A	0	DT		Discordo totalmente		pt-BR																																																																																																																																			
+A	0	D		Discordo		pt-BR																																																																																																																																			
+A	0	NCND		Não concordo nem discordo		pt-BR																																																																																																																																			
+A	0	C		Concordo		pt-BR																																																																																																																																			
+A	0	CT		Concordo totalmente		pt-BR																																																																																																																																			
+A	0	NSA		Não sei / Não se aplica		pt-BR																																																																																																																																			
+Q	F	AVALIASETORES	1	A organização e a gestão dos seguintes setores da UFJF são satisfatórias.	Você deverá dar uma resposta por linha	pt-BR		Y	N		1																																																																																																							1																							
+SQ	0	REIT	1	Reitoria		pt-BR																																																																																																																																			
+SQ	0	PROAE	1	Pró-Reitoria de Assistência Estudantil (Proae)		pt-BR																																																																																																																																			
+SQ	0	PROPP	1	Pró-Reitoria de Pós-Graduação e Pesquisa (Propp)		pt-BR																																																																																																																																			
+SQ	0	PRGRA	1	Pró-Reitoria de Graduação (Prograd)		pt-BR																																																																																																																																			
+SQ	0	PROEX	1	Pró-Reitoria de Extensão (Proex)		pt-BR																																																																																																																																			
+SQ	0	PRCUL	1	Pró-Reitoria de Cultura (Procult)		pt-BR																																																																																																																																			
+SQ	0	PRINF	1	Pró-Reitoria de Infraestrutura (Proinfra)		pt-BR																																																																																																																																			
+SQ	0	PRGPE	1	Pró-Reitoria de Gestão de Pessoas (Progepe)		pt-BR																																																																																																																																			
+SQ	0	PRGEF	1	Pró-Reitoria de Gestão e Finanças (Progefi)		pt-BR																																																																																																																																			
+SQ	0	PROPLAN	1	Pró-Reitoria de Planejamento (Proplan)		pt-BR																																																																																																																																			
+SQ	0	PRINOV	1	Pró-Reitoria de Inovação (Proinova)		pt-BR																																																																																																																																			
+SQ	0	PRODAV	1	Pró-Reitoria de Sistemas de Dados e Avaliação (Prosdav) 		pt-BR																																																																																																																																			
+SQ	0	DRI	1	Diretoria de Relações Internacionais (DRI)		pt-BR																																																																																																																																			
+SQ	0	DII	1	Diretoria de Imagem Institucional (DII)		pt-BR																																																																																																																																			
+SQ	0	DSP	1	Diretoria de Sustentabilidade e Patrimônio (DSP)		pt-BR																																																																																																																																			
+SQ	0	DIAAF	1	Diretoria de Ações Afirmativas		pt-BR																																																																																																																																			
+SQ	0	DCI	1	Diretoria de Controle Institucional (DCI)		pt-BR																																																																																																																																			
+SQ	0	DIRGGV	1	Diretoria Geral do Campus de Governador Valadares		pt-BR																																																																																																																																			
+SQ	0	DUX	1	Direção da Unidade (na qual você está lotado)		pt-BR																																																																																																																																			
+SQ	0	CDX	1	Chefia do Departamento (no qual você está em exercício)		pt-BR																																																																																																																																			
+A	0	DT		Discordo totalmente		pt-BR																																																																																																																																			
+A	0	D		Discordo		pt-BR																																																																																																																																			
+A	0	NCND		Não concordo nem discordo		pt-BR																																																																																																																																			
+A	0	C		Concordo		pt-BR																																																																																																																																			
+A	0	CT		Concordo totalmente		pt-BR																																																																																																																																			
+A	0	NSA		Não sei / Não se aplica		pt-BR																																																																																																																																			
+Q	L	ESTREG	1	Considero que o Estatuto e o Regimento Geral da UFJF regulamentam o funcionamento da Instituição de forma apropriada.		pt-BR		Y	N		1																	1																																																																																						1						1																	
+A	0	DT		Discordo totalmente		pt-BR																																																																																																																																			
+A	0	D		Discordo		pt-BR																																																																																																																																			
+A	0	NCND		Não concordo nem discordo		pt-BR																																																																																																																																			
+A	0	C		Concordo		pt-BR																																																																																																																																			
+A	0	CT		Concordo totalmente		pt-BR																																																																																																																																			
+A	0	NSA		Não sei / Não se aplica		pt-BR																																																																																																																																			
+Q	L	REGUNI	1	O regimento interno da unidade acadêmica na qual estou lotado(a) é apropriado.		pt-BR		Y	N		1																	1																																																																																						1						1																	
+A	0	DT		Discordo totalmente		pt-BR																																																																																																																																			
+A	0	D		Discordo		pt-BR																																																																																																																																			
+A	0	NCND		Não concordo nem discordo		pt-BR																																																																																																																																			
+A	0	C		Concordo		pt-BR																																																																																																																																			
+A	0	CT		Concordo totalmente		pt-BR																																																																																																																																			
+A	0	NSA		Não sei / Não se aplica		pt-BR																																																																																																																																			
+Q	L	CPA	1	Tenho conhecimento das atividades desenvolvidas pela Comissão Própria de Avaliação (CPA) - no caso de servidor do campus de GV, da Comissão Setorial Própria de Avaliação (CSPA).		pt-BR		Y	N		1																	1																																																																																						1						1																	
+A	0	DT		Discordo totalmente		pt-BR																																																																																																																																			
+A	0	D		Discordo		pt-BR																																																																																																																																			
+A	0	NCND		Não concordo nem discordo		pt-BR																																																																																																																																			
+A	0	C		Concordo		pt-BR																																																																																																																																			
+A	0	CT		Concordo totalmente		pt-BR																																																																																																																																			
+G	G3	Dimensão 10 - Sustentabilidade Financeira	1			pt-BR																																																																																																																																			
+Q	F	APLRF	1	A aplicação dos recursos financeiros da UFJF é satisfatória quanto à (ao):	Você deverá dar uma resposta por linha	pt-BR		Y	N		1																																																																																																							1																							
+SQ	0	DAtEn	1	Desenvolvimento das atividades de ensino		pt-BR																																																																																																																																			
+SQ	0	DAtPe	1	Desenvolvimento das atividades de pesquisa		pt-BR																																																																																																																																			
+SQ	0	DAtEx	1	Desenvolvimento das atividades de extensão		pt-BR																																																																																																																																			
+SQ	0	DAtInov	1	Desenvolvimento de ações de inovação		pt-BR																																																																																																																																			
+SQ	0	AqEqi	1	Aquisição de equipamentos e insumos		pt-BR																																																																																																																																			
+SQ	0	MAREF	1	Manutenção, ampliação e reformas do espaço físico		pt-BR																																																																																																																																			
+SQ	0	InCapS	1	Investimento na capacitação dos servidores (docentes e TAEs)		pt-BR																																																																																																																																			
+SQ	0	BProj	1	Bolsas para projetos de pesquisa e extensão		pt-BR																																																																																																																																			
+SQ	0	BMoTP	1	Bolsas para monitoria, tutoria e treinamento profissional		pt-BR																																																																																																																																			
+A	0	DT		Discordo totalmente		pt-BR																																																																																																																																			
+A	0	D		Discordo		pt-BR																																																																																																																																			
+A	0	NCND		Não concordo nem discordo		pt-BR																																																																																																																																			
+A	0	C		Concordo		pt-BR																																																																																																																																			
+A	0	CT		Concordo totalmente		pt-BR																																																																																																																																			
+A	0	NSA		Não sei / Não se aplica		pt-BR																																																																																																																																			
+Q	L	TrInv	1	Há transparência nos investimentos dos recursos financeiros na UFJF.		pt-BR		Y	N		1																	1																																																																																						1						1																	
+A	0	DT		Discordo totalmente		pt-BR																																																																																																																																			
+A	0	D		Discordo		pt-BR																																																																																																																																			
+A	0	NCND		Não concordo nem discordo		pt-BR																																																																																																																																			
+A	0	C		Concordo		pt-BR																																																																																																																																			
+A	0	CT		Concordo totalmente		pt-BR																																																																																																																																			
+A	0	NSA		Não sei / Não se aplica		pt-BR																																																																																																																																			
+G	G4	Comentários (Opcional)	1			pt-BR																																																																																																																																			
+Q	T	ABERTA	1	Comente abaixo o que considerar necessário acerca dos itens avaliados neste questionário.	A resposta a este item é OPCIONAL.	pt-BR			N		1																																																																																																							1				12		1																	
