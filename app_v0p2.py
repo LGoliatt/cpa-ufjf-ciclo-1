@@ -54,6 +54,13 @@ def transform_questions_to_dataframe(questions):
                 Q.append(q)
                
            
+        #if len(question_data['subquestions'])==0:
+        #    print(f"{question_id} -- {question_data['text']}")
+        #else:
+        #    for subquestion in question_data['subquestions']:
+        #        print(f"{question_id}[{subquestion['id']}] -- {subquestion['text']}")
+                
+        
         
     Q = pd.DataFrame(Q)
     return Q
@@ -232,7 +239,7 @@ def create_horizontal_stacked_bar_plots_percentage(df, question_id):
     st.altair_chart(chart, use_container_width=True)
 
 def create_percentage_table(df, question_data):
-    st.write(f"### - {question_data}")
+    st.write(f"### Question Data: {question_data}")
     
     # Filter data for the current question_data
     question_data_df = df[df['question_data'] == question_data]
@@ -263,7 +270,7 @@ def create_percentage_table(df, question_data):
 
 # Function to create horizontal stacked Altair bar plots with percentages for the "text" column
 def create_horizontal_stacked_bar_plots_percentage_data(df, question_data):
-    st.write(f"### - {question_data}")
+    st.write(f"### Question Data: {question_data}")
     
     # Filter data for the current question_data
     question_data_df = df[df['question_data'] == question_data]
@@ -287,21 +294,21 @@ def create_horizontal_stacked_bar_plots_percentage_data(df, question_data):
         x=alt.X('percentage:Q', title='Percentage (%)', scale=alt.Scale(domain=[0, 100])),  # Percentage on the x-axis
         color=alt.Color('data:N', title='Response', legend=alt.Legend(orient='bottom')),  # Stack by response type
         tooltip=['text', 'data', alt.Tooltip('percentage:Q', format='.2f')]  # Add tooltips for interactivity
-    )#.properties(
-    #    title=f"Response Distribution for - {question_data} (Percentage)",
-    #    width='container'  # Make the chart responsive to container width
-    #)#.configure_axis(
-    #    labelFontSize=12,  # Increase font size for better readability
-    #    titleFontSize=14
-    #).configure_legend(
-    #    titleFontSize=12,
-    #    labelFontSize=12
-    #)
+    ).properties(
+        title=f"Response Distribution for Question Data: {question_data} (Percentage)",
+        width='container'  # Make the chart responsive to container width
+    ).configure_axis(
+        labelFontSize=12,  # Increase font size for better readability
+        titleFontSize=14
+    ).configure_legend(
+        titleFontSize=12,
+        labelFontSize=12
+    )
     
     # Display the chart in Streamlit with full width
     st.altair_chart(chart, use_container_width=True)
 
-#%%
+
     
 # Streamlit app
 def main():
@@ -309,7 +316,7 @@ def main():
     import streamlit as st
     
     # Create a Streamlit app with two tabs
-    st.title('Avalia UFJF 2024')
+    st.title('Basic Streamlit App with Two Tabs')
     
     # Create tabs
     tab1, tab2 = st.tabs(["Estudantes", "Servidores"])
@@ -325,7 +332,7 @@ def main():
 
 
         questions = extract_questions_and_subquestions(cod_path)
-        A = pd.read_csv(file_path, sep=';', keep_default_na=False)
+        A = pd.read_csv(file_path, sep=';')
         A = remove_single_occurrences(A)
         Q = transform_questions_to_dataframe(questions)
         Q = include_subquestion(A,Q, uploaded_file)
@@ -351,7 +358,7 @@ def main():
 
 
         questions = extract_questions_and_subquestions(cod_path)
-        A = pd.read_csv(file_path, sep=';', keep_default_na=False)
+        A = pd.read_csv(file_path, sep=';')
         A = remove_single_occurrences(A)
         Q = transform_questions_to_dataframe(questions)
         Q = include_subquestion(A,Q, uploaded_file)

@@ -31,33 +31,45 @@ def extract_questions_and_subquestions(file_path):
 
     return questions
 
-def transform_questions_to_dataframe(questions):
-    
-    Q=[]
-    # Print the extracted questions and subquestions
-    for question_id, question_data in questions.items():
-        if len(question_data['subquestions'])==0:
+# Example usage
+file_path = './data/Códigos_estudante.csv'
+#file_path = './data/Códigos_servidores.csv'
+questions = extract_questions_and_subquestions(file_path)
+
+
+Q=[]
+# Print the extracted questions and subquestions
+for question_id, question_data in questions.items():
+    if len(question_data['subquestions'])==0:
+        q={}
+        q['question_id']=question_id
+        q['question_data']=question_data['text']
+        q['subquestions'] = question_id#f"{question_id}"
+        q['text'] = question_data['text']
+        Q.append(q)
+    else:
+        for subquestion in question_data['subquestions']:
             q={}
             q['question_id']=question_id
             q['question_data']=question_data['text']
-            q['subquestions'] = question_id#f"{question_id}"
-            q['text'] = question_data['text']
+            q['subquestions'] = subquestion['id']
+            q['subquestions'] = f"{question_id}[{subquestion['id']}]"
+            q['text'] = subquestion['text']
             Q.append(q)
-        else:
-            for subquestion in question_data['subquestions']:
-                q={}
-                q['question_id']=question_id
-                q['question_data']=question_data['text']
-                q['subquestions'] = subquestion['id']
-                q['subquestions'] = f"{question_id}[{subquestion['id']}]"
-                q['text'] = subquestion['text']
-                Q.append(q)
-               
            
-        
-    Q = pd.DataFrame(Q)
-    return Q
+       
+    #if len(question_data['subquestions'])==0:
+    #    print(f"{question_id} -- {question_data['text']}")
+    #else:
+    #    for subquestion in question_data['subquestions']:
+    #        print(f"{question_id}[{subquestion['id']}] -- {subquestion['text']}")
+            
+    
+    
+Q = pd.DataFrame(Q)
 
+#%%
+A = pd.read_csv('./data/Parcial_estudantes_09_02.csv', sep=';')
 
 def remove_single_occurrences(df,n=1):
     for column in df.columns:
@@ -66,27 +78,31 @@ def remove_single_occurrences(df,n=1):
         df[column] = df[column].apply(lambda x: x if x not in to_remove else None)
     return df
 
-def include_subquestion(A,Q, uploaded_file):
-    l=[]
-    for c in Q['subquestions'].values:
-        l.append(list(A[c].values))
-        
-        
-    Q['data']=l 
+# Apply the function to the DataFrame
+A = remove_single_occurrences(A)
+
+
+l=[]
+for c in Q['subquestions'].values:
+    l.append(list(A[c].values))
     
-    output_csv_path = uploaded_file
-    Q.to_csv(output_csv_path, index=False, encoding='utf-8')
-    return Q
+    
+Q['data']=l 
 
+output_csv_path = 'questions_and_subquestions.csv'
+Q.to_csv(output_csv_path, index=False, encoding='utf-8')
 
-#%%
+#%%   
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import altair as alt
 
-
+# Load the CSV file
+@st.cache_data
+def load_data(file_path):
+    return pd.read_csv(file_path)
 
 # Function to create horizontal stacked bar charts for each subquestion
 def create_stacked_bar_charts(df, question_id):
@@ -230,145 +246,28 @@ def create_horizontal_stacked_bar_plots_percentage(df, question_id):
     
     # Display the chart in Streamlit
     st.altair_chart(chart, use_container_width=True)
-
-def create_percentage_table(df, question_data):
-    st.write(f"### - {question_data}")
-    
-    # Filter data for the current question_data
-    question_data_df = df[df['question_data'] == question_data]
-    
-    # Flatten the 'data' column (convert string lists to actual lists and flatten)
-    question_data_df['data'] = question_data_df['data'].apply(eval)
-    flattened_data = question_data_df.explode('data')
-    
-    # Create a DataFrame for the table
-    plot_df = flattened_data.groupby(['text', 'data']).size().reset_index(name='count')
-    
-    # Calculate the total count for each "text" entry
-    total_counts = plot_df.groupby('text')['count'].transform('sum')
-    
-    # Calculate the percentage of each response
-    plot_df['percentage'] = (plot_df['count'] / total_counts) * 100
-    
-    # Pivot the table for better readability
-    pivot_table = plot_df.pivot(index='text', columns='data', values='percentage').fillna(0)
-    
-    # Round the percentages to 2 decimal places
-    pivot_table = pivot_table.round(2)
-    
-    # Display the table in Streamlit
-    st.write(f"#### Percentage Distribution for: {question_data}")
-    st.dataframe(pivot_table.style.format("{:.2f}%"), use_container_width=True)
-
-
-# Function to create horizontal stacked Altair bar plots with percentages for the "text" column
-def create_horizontal_stacked_bar_plots_percentage_data(df, question_data):
-    st.write(f"### - {question_data}")
-    
-    # Filter data for the current question_data
-    question_data_df = df[df['question_data'] == question_data]
-    
-    # Flatten the 'data' column (convert string lists to actual lists and flatten)
-    question_data_df['data'] = question_data_df['data'].apply(eval)
-    flattened_data = question_data_df.explode('data')
-    
-    # Create a DataFrame for plotting
-    plot_df = flattened_data.groupby(['text', 'data']).size().reset_index(name='count')
-    
-    # Calculate the total count for each "text" entry
-    total_counts = plot_df.groupby('text')['count'].transform('sum')
-    
-    # Calculate the percentage of each response
-    plot_df['percentage'] = (plot_df['count'] / total_counts) * 100
-    
-    # Create a horizontal stacked Altair bar chart with percentages
-    chart = alt.Chart(plot_df).mark_bar().encode(
-        y=alt.Y('text:N', title='Text', axis=alt.Axis(labelLimit=200)),  # Text on the y-axis with increased label limit
-        x=alt.X('percentage:Q', title='Percentage (%)', scale=alt.Scale(domain=[0, 100])),  # Percentage on the x-axis
-        color=alt.Color('data:N', title='Response', legend=alt.Legend(orient='bottom')),  # Stack by response type
-        tooltip=['text', 'data', alt.Tooltip('percentage:Q', format='.2f')]  # Add tooltips for interactivity
-    )#.properties(
-    #    title=f"Response Distribution for - {question_data} (Percentage)",
-    #    width='container'  # Make the chart responsive to container width
-    #)#.configure_axis(
-    #    labelFontSize=12,  # Increase font size for better readability
-    #    titleFontSize=14
-    #).configure_legend(
-    #    titleFontSize=12,
-    #    labelFontSize=12
-    #)
-    
-    # Display the chart in Streamlit with full width
-    st.altair_chart(chart, use_container_width=True)
-
-#%%
     
 # Streamlit app
 def main():
+    st.title("Question and Subquestion Analysis")
     
-    import streamlit as st
-    
-    # Create a Streamlit app with two tabs
-    st.title('Avalia UFJF 2024')
-    
-    # Create tabs
-    tab1, tab2 = st.tabs(["Estudantes", "Servidores"])
-    
-    # Content for the "Estudantes" tab
-    with tab1:
-        st.header("Estudantes")
-        st.write("Content for Estudantes tab goes here.")
-    
-        cod_path = './data/Códigos_estudantes.csv'
-        file_path = './data/Parcial_estudantes_09_02.csv'
-        uploaded_file = 'questions_and_subquestions_estudantes.csv'
+    # File upload
+    #uploaded_file = st.file_uploader("Upload your CSV file", type=["csv"])
+    uploaded_file = 'questions_and_subquestions.csv'
+    if uploaded_file is not None:
+        #df = load_data(uploaded_file)
+        df = pd.read_csv('questions_and_subquestions.csv')
 
-
-        questions = extract_questions_and_subquestions(cod_path)
-        A = pd.read_csv(file_path, sep=';', keep_default_na=False)
-        A = remove_single_occurrences(A)
-        Q = transform_questions_to_dataframe(questions)
-        Q = include_subquestion(A,Q, uploaded_file)
+        # Group by question_id
+        question_ids = df['question_id'].unique()
         
-        st.title("Question and Subquestion Analysis")
-        
-        if uploaded_file is not None:
-            df = pd.read_csv(uploaded_file)
-    
-            question_data_values = df['question_data'].unique()
-            
-            for q_data in question_data_values:
-                create_horizontal_stacked_bar_plots_percentage_data(df, q_data)
-
-    # Content for the "Servidores" tab
-    with tab2:
-        st.header("Servidores")
-        st.write("Content for Servidores tab goes here.")
-    
-        cod_path = './data/Códigos_servidores.csv'
-        file_path = './data/Parcial_servidores_09_02.csv'
-        uploaded_file = 'questions_and_subquestions_servidores.csv'
-
-
-        questions = extract_questions_and_subquestions(cod_path)
-        A = pd.read_csv(file_path, sep=';', keep_default_na=False)
-        A = remove_single_occurrences(A)
-        Q = transform_questions_to_dataframe(questions)
-        Q = include_subquestion(A,Q, uploaded_file)
-        
-        st.title("Question and Subquestion Analysis")
-        
-        if uploaded_file is not None:
-            df = pd.read_csv(uploaded_file)
-
-            question_data_values = df['question_data'].unique()
-            
-            for q_data in question_data_values:
-                create_horizontal_stacked_bar_plots_percentage_data(df, q_data)
-    
-    
+        for qid in question_ids:
+            #create_barplots(df, qid)
+            #create_stacked_bar_charts(df, qid)
+            create_horizontal_stacked_bar_plots_percentage(df, qid)
 
 
 if __name__ == "__main__":
     main()        
+        
         
