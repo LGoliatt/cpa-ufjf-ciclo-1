@@ -327,8 +327,68 @@ def main():
         questions = extract_questions_and_subquestions(cod_path)
         A = pd.read_csv(file_path, sep=';', keep_default_na=False)
         A = remove_single_occurrences(A)
+        A.fillna('', inplace=True)
+        
+        keys_dict = {}
+        length={}
+        nn=3
+        for i in range(nn):
+            s = A.columns[i]
+            op = list(A[A.columns[i]].unique())
+            options = st.multiselect(
+                label=f"{s}",
+                options = op,
+                default=None,
+            )
+            keys_dict[s]=options
+            length[s]=len(options)
+
+        keys=keys_dict.copy()
+        for nam,opt in keys_dict.items():
+            print(nam,opt)
+            if len(opt)==0:
+                keys.pop(nam)
+            for k in opt:
+                if 'Tod' in k:
+                    keys.pop(nam)
+               
+           #df_selected=X.copy()    
+        st.markdown('Parâmetros selecionados:')    
+        if len(keys)>0:    
+            q=''
+            for nam,opt in keys.items():
+                #print(nam)
+                s='('
+                for i,k in enumerate(opt):
+                    #print('\t\t--',k)
+                    s+=f'{nam}=="{k}"'
+                    if i<len(opt)-1:
+                        s+=' | '
+                
+                s+=')'
+                #print(s)
+                q+=s+'&'
+                    #aux=X.query(f'{nam}=="{k}"', inplace=True)
+                    #st.metric(label=nam+':\t', value=k, delta="")
+            df_selected = A.query(q[:-1])
+        else:
+            df_selected = A.copy()                            
+
+
+        if len(df_selected)==1:
+                df_selected.drop(labels=df_selected.index[0],axis=0, inplace=True)
+                
+        col = st.columns(1)
+        #for i in range(nn):
+        #    s, v = list(length.keys())[i], list(length.values())[i]
+        #    col[i].metric(label=s, value=v, delta="")
+
+        col[0].metric(label='Respondentes', value=len(df_selected), delta="")
+        
+        
+            
         Q = transform_questions_to_dataframe(questions)
-        Q = include_subquestion(A,Q, uploaded_file)
+        Q = include_subquestion(df_selected,Q, uploaded_file)
         
         st.title("Question and Subquestion Analysis")
         
@@ -353,9 +413,69 @@ def main():
         questions = extract_questions_and_subquestions(cod_path)
         A = pd.read_csv(file_path, sep=';', keep_default_na=False)
         A = remove_single_occurrences(A)
-        Q = transform_questions_to_dataframe(questions)
-        Q = include_subquestion(A,Q, uploaded_file)
+        A.fillna('', inplace=True)
         
+        keys_dict = {}
+        length={}
+        nn=3
+        for i in range(nn):
+            s = A.columns[i]
+            op = list(A[A.columns[i]].unique())
+            options = st.multiselect(
+                label=f"{s}",
+                options = op,
+                default=None,
+            )
+            keys_dict[s]=options
+            length[s]=len(options)
+
+        keys=keys_dict.copy()
+        for nam,opt in keys_dict.items():
+            print(nam,opt)
+            if len(opt)==0:
+                keys.pop(nam)
+            for k in opt:
+                if 'Tod' in k:
+                    keys.pop(nam)
+               
+           #df_selected=X.copy()    
+        st.markdown('Parâmetros selecionados:')    
+        if len(keys)>0:    
+            q=''
+            for nam,opt in keys.items():
+                #print(nam)
+                s='('
+                for i,k in enumerate(opt):
+                    #print('\t\t--',k)
+                    s+=f'{nam}=="{k}"'
+                    if i<len(opt)-1:
+                        s+=' | '
+                
+                s+=')'
+                #print(s)
+                q+=s+'&'
+                    #aux=X.query(f'{nam}=="{k}"', inplace=True)
+                    #st.metric(label=nam+':\t', value=k, delta="")
+            df_selected = A.query(q[:-1])
+        else:
+            df_selected = A.copy()                            
+
+
+        if len(df_selected)==1:
+                df_selected.drop(labels=df_selected.index[0],axis=0, inplace=True)
+                
+        col = st.columns(1)
+        #for i in range(nn):
+        #    s, v = list(length.keys())[i], list(length.values())[i]
+        #    col[i].metric(label=s, value=v, delta="")
+
+        col[0].metric(label='Respondentes', value=len(df_selected), delta="")
+        
+        
+            
+        Q = transform_questions_to_dataframe(questions)
+        Q = include_subquestion(df_selected,Q, uploaded_file)
+
         st.title("Question and Subquestion Analysis")
         
         if uploaded_file is not None:
