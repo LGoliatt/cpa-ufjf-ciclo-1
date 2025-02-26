@@ -437,6 +437,17 @@ def listar_anos(diretorio):
 
 #%%
     
+css = '''
+<style>
+    .stTabs [data-baseweb="tab-list"] button [data-testid="stMarkdownContainer"] p {
+    font-size:2rem;
+    }
+</style>
+'''
+
+st.markdown(css, unsafe_allow_html=True)
+
+
 # Streamlit app
 def main():
     
