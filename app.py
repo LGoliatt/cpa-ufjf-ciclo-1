@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-  
 import pandas as pd
 import csv
+import os
 
 def extract_questions_and_subquestions(file_path):
     questions = {}
@@ -301,6 +302,139 @@ def create_horizontal_stacked_bar_plots_percentage_data(df, question_data):
     # Display the chart in Streamlit with full width
     st.altair_chart(chart, use_container_width=True)
 
+
+def fun_exc_estudantes(A):
+    
+    dic_exc={}
+    dic_exc[ 'Area'						]=	'Unidade'
+    dic_exc[ 'Campus'					]=	'Campus'
+    dic_exc[ 'Nivel'					]=	'Nivelcurso'
+    dic_exc[ 'Avaliasetores[PROAE]'		]=	'AvaliaSetores[PROAE]'
+    dic_exc[ 'Avaliasetores[PROCULT]'	]=	'AvaliaSetores[PRCUL]'
+    dic_exc[ 'Avaliasetores[PROEX]'		]=	'AvaliaSetores[PROEX]'
+    dic_exc[ 'Avaliasetores[PROGRAD]'	]=	'AvaliaSetores[PRGRA]'
+    dic_exc[ 'Avaliasetores[PROPP]'		]=	'AvaliaSetores[PROPP]'
+    dic_exc[ 'Avaliasetores[DIAAF]'		]=	'AvaliaSetores[DIAAF]'
+    dic_exc[ 'Avaliasetores[DRI]'		]=	'AvaliaSetores[DRI]'
+    dic_exc[ 'Avaliasetores[COORD]'		]=	'AvaliaSetores[COORD]'
+    dic_exc[ 'Avaliasetores[OUVG]'		]=	'AvaliaSetores[OUVID]'
+    dic_exc[ 'Avaliasetores[CAT]'		]=	'AvaliaSetores[CATEND]'
+    dic_exc[ 'EstReg'					]=	'EstReg'
+    dic_exc[ 'Regimento'				]=	'RAGRI'
+    dic_exc[ 'OrgCol[DivDec]'			]=	'OrgCo[DivDec]'
+    dic_exc[ 'OrgCol[ImplDec]'			]=	'OrgCo[ImplDec]'
+    dic_exc[ 'OrgCol[RepDec]'			]=	'OrgCo[RepOrgCol]'
+    dic_exc[ 'CPA'						]=	'CPA'
+    dic_exc[ 'ApRecFin[DesAtEns]'		]=	'AplRF[DAtEn]'
+    dic_exc[ 'ApRecFin[DesAtPesq]'		]=	'AplRF[DAtPe]'
+    dic_exc[ 'ApRecFin[DesAtEx]'		]=	'AplRF[DAtEx]'
+    dic_exc[ 'ApRecFin[DesAtInov]'		]=	'AplRF[DAtInov]'
+    dic_exc[ 'ApRecFin[AqEqIns]'		]=	'AplRF[AqEqi]'
+    dic_exc[ 'ApRecFin[ManAmpRef]'		]=	'AplRF[MAREF]'
+    dic_exc[ 'ApRecFin[BProjPesqEx]'	]=	'AplRF[BProj]'
+    dic_exc[ 'ApRecFin[BMonitTP]'		]=	'AplRF[BMoTP]'
+    dic_exc[ 'ApRecFin[ConcAux]'		]=	'AplRF[CAVS]'
+    dic_exc[ 'TranspInv'				]=	'TrInv'
+    dic_exc[ 'AvaliaSetores[PROINOV]'	]=	'AvaliaSetores[PROINOV]'
+    dic_exc[ 'Qaberta'               	]=	'Qaberta'
+    
+    #exc_dic=dict(zip(dic_exc.values(), dic_exc.keys()))
+    
+    B=pd.DataFrame()
+    for c in A.columns:
+        if c  in dic_exc.keys():
+            B[dic_exc[c]]=A[c]
+        else:
+            B[c]=A[c]
+
+    for c in dic_exc.values():
+        if c  not in B.columns:
+            B[c]=None
+            
+    
+    return B
+
+
+def fun_exc_servidores(A):
+    
+    dic_exc={}
+    dic_exc['Perfil'        	    ]=	'Perfil'
+    dic_exc['Campus'	            ]=	'Campus'
+    dic_exc['Area'	                ]=	'LOTACAO'
+    dic_exc['Capacitacao'	        ]=	'CAP'
+    dic_exc['Qualificacao'	        ]=	'Proquali'
+    dic_exc['Acoesdesenv'	        ]=	'Acoesdesenv'
+    dic_exc['apoiofin'	            ]=	'Apoio'
+    dic_exc['DistCHDoc'	            ]=	'CHdocente'
+    dic_exc['DistCHTae'	            ]=	'CHTAE'
+    dic_exc['Qualivida'	            ]=	'Qualivida'
+    dic_exc['Saudeocupa'	        ]=	'Saudeocupacional'
+    dic_exc['Divulgacarr'	        ]=	'DivulCarreira'
+    dic_exc['ClimaOrg'	            ]=	'Ambiente'
+    dic_exc['Motivacao'	            ]=	'Motivacao'
+    dic_exc['OrgCol[DivDec]'	    ]=	'ORGCOL[DIVDEC]'
+    dic_exc['OrgCol[ImplDec]'	    ]=	'ORGCOL[IMPLDEC]'
+    dic_exc['OrgCol[RepOrgCol]'	    ]=	'ORGCOL[REPORGCOL]'
+    dic_exc['AvaliaSetores[REIT]'	]=	'AVALIASETORES[REIT]'
+    dic_exc['AvaliaSetores[PROAE]'	]=	'AVALIASETORES[PROAE]'
+    dic_exc['AvaliaSetores[PROPP]'	]=	'AVALIASETORES[PROPP]'
+    dic_exc['AvaliaSetores[PRGRA]'	]=	'AVALIASETORES[PRGRA]'
+    dic_exc['AvaliaSetores[PROEX]'	]=	'AVALIASETORES[PROEX]'
+    dic_exc['AvaliaSetores[PRCUL]'	]=	'AVALIASETORES[PRCUL]'
+    dic_exc['AvaliaSetores[PRINF]'	]=	'AVALIASETORES[PRINF]'
+    dic_exc['AvaliaSetores[PRGPE]'	]=	'AVALIASETORES[PRGPE]'
+    dic_exc['AvaliaSetores[DUX]'	]=	'AVALIASETORES[DUX]'
+    dic_exc['AVALIASETORES[PRGEF]'	]=	'AVALIASETORES[PRGEF]'
+    dic_exc['AvaliaSetores[PRPLA]'	]=	'AVALIASETORES[PROPLAN]'
+    dic_exc['AvaliaSetores[DI]'	    ]=	'AVALIASETORES[PRINOV]'
+    dic_exc['AVALIASETORES[PRODAV]'	]=	'AVALIASETORES[PRODAV]'
+    dic_exc['AvaliaSetores[DRI]'	]=	'AVALIASETORES[DRI]'
+    dic_exc['AvaliaSetores[DII]'	]=	'AVALIASETORES[DII]'
+    dic_exc['AvaliaSetores[CDX]'	]=	'AVALIASETORES[CDX]'
+    dic_exc['AvaliaSetores[DIRGGV]'	]=	'AVALIASETORES[DIRGGV]'
+    dic_exc['AvaliaSetores[DIAFF]'	]=	'AVALIASETORES[DIAAF]'
+    dic_exc['AVALIASETORES[DSP]'	]=	'AVALIASETORES[DSP]'
+    dic_exc['AVALIASETORES[DCI]'	]=	'AVALIASETORES[DCI]'
+    dic_exc['EstReg'            	]=	'ESTREG'
+    dic_exc['RegUni'            	]=	'REGUNI'
+    dic_exc['CPA'               	]=	'CPA'
+    dic_exc['AplRF[DAtEn]'	        ]=	'APLRF[DAtEn]'
+    dic_exc['AplRF[DAtPe]'	        ]=	'APLRF[DAtPe]'
+    dic_exc['AplRF[DAtEx]'	        ]=	'APLRF[DAtEx]'
+    dic_exc['AplRF[DAtInov]'	    ]=	'APLRF[DAtInov]'
+    dic_exc['AplRF[AqEqi]'	        ]=	'APLRF[AqEqi]'
+    dic_exc['AplRF[MAREF]'	        ]=	'APLRF[MAREF]'
+    dic_exc['AplRF[InCapS]'	        ]=	'APLRF[InCapS]'
+    dic_exc['AplRF[BProj]'	        ]=	'APLRF[BProj]'
+    dic_exc['AplRF[BMoTP]'	        ]=	'APLRF[BMoTP]'
+    dic_exc['TrInv'	                ]=	'TrInv'
+    dic_exc['ABERTA'	            ]=	'ABERTA'
+    dic_exc['AtivAdm'	            ]=	'AtivAdm'
+    dic_exc['SitTrab'	            ]=	'SitTrab'
+    dic_exc['Qualicursos'	        ]=	'Qualicursos'
+    dic_exc['AvaliaSetores[DIAVI]'	]=	'AvaliaSetores[DIAVI]'
+    
+    B=pd.DataFrame()
+    for c in A.columns:
+        if c  in dic_exc.keys():
+            B[dic_exc[c]]=A[c]
+        else:
+            B[c]=A[c]
+
+    for c in dic_exc.values():
+        if c  not in B.columns:
+            B[c]=None
+            
+    
+    return B
+
+
+# Função para listar as pastas (anos) dentro da pasta 'data'
+def listar_anos(diretorio):
+    # Obtém a lista de pastas dentro da pasta 'data'
+    anos = [pasta for pasta in os.listdir(diretorio) if os.path.isdir(os.path.join(diretorio, pasta))]
+    return sorted(anos)  # Ordena os anos de forma crescente
+
 #%%
     
 # Streamlit app
@@ -311,21 +445,32 @@ def main():
     # Create a Streamlit app with two tabs
     st.title('Avalia UFJF 2024')
     
+    
+    # Lista os anos (pastas) na pasta 'data'
+    pasta_dados = "data"
+    anos = listar_anos(pasta_dados)[::-1]
+    
+    # Cria um seletor de ano a partir das pastas listadas
+    ano_selecionado = st.selectbox("Escolha um ano", anos)
+
+    # Exibe os arquivos dentro da pasta selecionada
+    caminho_pasta_ano = os.path.join(pasta_dados, ano_selecionado)
+        
     # Create tabs
     tab1, tab2 = st.tabs(["Estudantes", "Servidores"])
-    
     # Content for the "Estudantes" tab
     with tab1:
         st.header("Estudantes")
         st.write("Content for Estudantes tab goes here.")
     
-        cod_path = './data/Códigos_estudantes.csv'
-        file_path = './data/Parcial_estudantes_09_02.csv'
+        cod_path = './data/2024/Códigos_estudantes.csv'
+        file_path = f'./data/{ano_selecionado}/Estudantes_dados_{ano_selecionado}.csv'
         uploaded_file = 'questions_and_subquestions_estudantes.csv'
 
 
         questions = extract_questions_and_subquestions(cod_path)
         A = pd.read_csv(file_path, sep=';', keep_default_na=False)
+        A=fun_exc_estudantes(A)
         A = remove_single_occurrences(A)
         A.fillna('', inplace=True)
         
@@ -405,13 +550,14 @@ def main():
         st.header("Servidores")
         st.write("Content for Servidores tab goes here.")
     
-        cod_path = './data/Códigos_servidores.csv'
-        file_path = './data/Parcial_servidores_09_02.csv'
+        cod_path = './data/2024/Códigos_servidores.csv'
+        file_path = f'./data/{ano_selecionado}/Servidores_dados_{ano_selecionado}.csv'
         uploaded_file = 'questions_and_subquestions_servidores.csv'
 
 
         questions = extract_questions_and_subquestions(cod_path)
         A = pd.read_csv(file_path, sep=';', keep_default_na=False)
+        A=fun_exc_servidores(A)
         A = remove_single_occurrences(A)
         A.fillna('', inplace=True)
         
