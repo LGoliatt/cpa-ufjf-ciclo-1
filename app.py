@@ -492,7 +492,7 @@ css = '''
 </style>
 '''
 
-st.set_page_config(layout="wide")  # this needs to be the first Streamlit command
+#st.set_page_config(layout="wide")  # this needs to be the first Streamlit command
 st.markdown(css, unsafe_allow_html=True)
 
 
