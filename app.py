@@ -609,8 +609,10 @@ def main():
        
         B=df_selected[cols].replace(repl0).select_dtypes(include=['number'])
         satisfaction_index = (B.sum(skipna=True)/B.count()*100).round(2)
+        neg=((1-B.count()/len(B))*100).round(2)
         satisfaction_index.index = [dic_q[i] for i in satisfaction_index.index]
-        satisfaction_index = pd.DataFrame(satisfaction_index, columns = ['Indice de Satisfação (\%)'])
+        satisfaction_index = pd.DataFrame(satisfaction_index, columns = ['Indice de Satisfação (%)'])
+        #satisfaction_index['Não sei/Não se aplica (%)'] = neg.values
         if len(satisfaction_index)>0:
             st.write(f"### - {question_data}")
             st.table(
@@ -625,11 +627,13 @@ def main():
 
     B=df_selected[list(dic_q.keys())].replace(repl0).select_dtypes(include=['number'])
     satisfaction_index = (B.sum(skipna=True)/B.count()*100).round(2)
+    neg=((1-B.count()/len(B))*100).round(2)
     satisfaction_index.index = [dic_q[i] for i in satisfaction_index.index]
     satisfaction_index = pd.DataFrame(satisfaction_index, columns = ['Indice de Satisfação (\%)'])
     #satisfaction_index['Item avaliado'] = [dic_q[i] for i in satisfaction_index.index]
     #satisfaction_index = satisfaction_index[['Item avaliado','Indice de Satisfação (\%)']]
-    
+    satisfaction_index['Não sei/Não se aplica (%)'] = neg.values
+
     #st.dataframe(satisfaction_index,use_container_width=True,hide_index=False)
     #st.bar_chart(satisfaction_index)
     st.title("Resumo dos indicadores")    
@@ -644,9 +648,12 @@ def main():
     
     #print(satisfaction_index)
     st.table(
-        satisfaction_index.style.applymap(
-            color_coding_change_flag_2, #subset=NPS.columns.drop('Ambiente'),
-        ).set_table_styles(styles).format("{:.1f}"),
+        #satisfaction_index.style.applymap(
+        #    color_coding_change_flag_2, #subset=NPS.columns.drop('Ambiente'),
+        #).set_table_styles(styles).format("{:.1f}"),
+
+        satisfaction_index.style.set_table_styles(styles).format("{:.1f}"),
+
         #height=1200,
         #hide_index=False,
         #use_container_width=True,
