@@ -739,7 +739,14 @@ def main():
     #             create_horizontal_stacked_bar_plots_percentage_data(df, q_data)
     
     
-
+    st.markdown('''
+              ----------------------------------------------------\n
+              Modelo computacional e análise de dados por [Leonardo Goliatt](http://lattes.cnpq.br/9030707448549156)\n
+              Departamento de Mecânica Aplicada e Computacional\n
+              Pós-graduação em Modelagem Computacional\n
+              Faculdade de Engenharia - UFJF\n
+              leonardo.goliatt@ufjf.br
+              ''')
 
 if __name__ == "__main__":
     main()        
