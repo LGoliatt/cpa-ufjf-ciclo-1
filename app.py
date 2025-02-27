@@ -492,13 +492,17 @@ css = '''
 </style>
 '''
 
+#st.set_page_config(layout="wide")  # this needs to be the first Streamlit command
 st.markdown(css, unsafe_allow_html=True)
 
 
 # Streamlit app
 def main():
-        
-    st.title('Avalia UFJF 2024')
+
+    st.header("Universidade Federal de Juiz de Fora")
+    st.markdown("[**Comissão Própria de Avaliação**](https://www2.ufjf.br/cpa/)")
+    st.image('avalia-ufjf-2024.png', caption='')
+    st.title('Avalia UFJF 2024 - Ciclo 1')
     ## Create tabs
     #tab1, tab2 = st.tabs(["Resultados", "Comparação"])
     #with tab1:
