@@ -435,6 +435,53 @@ def listar_anos(diretorio):
     anos = [pasta for pasta in os.listdir(diretorio) if os.path.isdir(os.path.join(diretorio, pasta))]
     return sorted(anos)  # Ordena os anos de forma crescente
 
+
+styles = [dict(selector="th", props=[('width', '40px')]),
+                  dict(selector="th.col_heading",
+                       props=[("writing-mode", "vertical-lr"),
+                              ('transform', 'rotateZ(180deg)'), 
+                              #('height', '290px'),
+                              ('horizontal-align', 'bottom'),
+                              ('vertical-align', 'bottom')])]
+
+def color_coding_change_flag_2(val):
+        if val==None or val=='':
+            color = None
+        else:
+            if val>=0 and val <25:
+                color = "red"
+            elif val>=25 and val <50:
+                color = "orange"     
+            elif val>=50 and val <75:
+                color = "yellow"     
+            elif val>=75:
+                color = "green"     
+            else:
+                color = None
+    
+        return f'background-color: {color}'
+    
+
+repl={
+ 'Concordo'                   : '2-Concordo'                   ,
+ 'Concordo totalmente'        : '1-Concordo totalmente'        ,
+ 'Discordo'                   : '4-Discordo'                   ,
+ 'Discordo totalmente'        : '5-Discordo totalmente'        ,
+ 'Não concordo nem discordo'  : '3-Não concordo nem discordo'  ,
+ 'Não sei / Não se aplica'    : '6-Não sei / Não se aplica'    ,
+ '':'6-Não sei / Não se aplica' ,
+}
+
+repl0={
+ 'Concordo'                   : 0.66,
+ 'Concordo totalmente'        : 1,
+ 'Discordo'                   : 0.33,
+ 'Discordo totalmente'        : 0,
+ 'Não concordo nem discordo'  : None,
+ 'Não sei / Não se aplica'    : None,
+ '':None,
+}
+
 #%%
     
 css = '''
@@ -450,198 +497,242 @@ st.markdown(css, unsafe_allow_html=True)
 
 # Streamlit app
 def main():
-    
-    import streamlit as st
-    
-    # Create a Streamlit app with two tabs
+        
     st.title('Avalia UFJF 2024')
-    
-    
+    ## Create tabs
+    #tab1, tab2 = st.tabs(["Resultados", "Comparação"])
+    #with tab1:
     # Lista os anos (pastas) na pasta 'data'
     pasta_dados = "data"
-    anos = listar_anos(pasta_dados)[::-1]
-    
-    # Cria um seletor de ano a partir das pastas listadas
-    ano_selecionado = st.selectbox("Escolha um ano", anos)
+    perfil_selecionado = st.radio("Escolha o Perfil", ['Estudantes', 'Servidores'])
 
+    anos = listar_anos(pasta_dados)[::-1]
+        # Cria um seletor de ano a partir das pastas listadas
+    ano_selecionado = st.radio("Escolha um ano", anos)
     # Exibe os arquivos dentro da pasta selecionada
     caminho_pasta_ano = os.path.join(pasta_dados, ano_selecionado)
-        
-    # Create tabs
-    tab1, tab2 = st.tabs(["Estudantes", "Servidores"])
-    # Content for the "Estudantes" tab
-    with tab1:
-        st.header("Estudantes")
-        st.write("Content for Estudantes tab goes here.")
+   
     
-        cod_path = './data/2024/Códigos_estudantes.csv'
-        file_path = f'./data/{ano_selecionado}/Estudantes_dados_{ano_selecionado}.csv'
-        uploaded_file = 'questions_and_subquestions_estudantes.csv'
+    cod_path = f'./data/2024/Códigos_{perfil_selecionado}.csv'
+    file_path = f'./data/{ano_selecionado}/{perfil_selecionado}_dados_{ano_selecionado}.csv'
+    uploaded_file = f'questions_and_subquestions_{perfil_selecionado}.csv'
 
+    questions = extract_questions_and_subquestions(cod_path)
+    A = pd.read_csv(file_path, sep=';', keep_default_na=False)
+    
+    fun_exc={
+        'Estudantes': fun_exc_estudantes,
+        'Servidores': fun_exc_servidores,
+        }    
+    
+    A=fun_exc[perfil_selecionado](A)
+    
+    A = remove_single_occurrences(A)
+    A.fillna('', inplace=True)       
+    #A.replace(repl, inplace=True)
+    
+    keys_dict = {}
+    length={}
+    nn=3
+    for i in range(nn):
+        s = A.columns[i]
+        op = list(A[A.columns[i]].unique())
+        options = st.multiselect(
+            label=f"{s}",
+            options = op,
+            default=None,
+        )
+        keys_dict[s]=options
+        length[s]=len(options)
 
-        questions = extract_questions_and_subquestions(cod_path)
-        A = pd.read_csv(file_path, sep=';', keep_default_na=False)
-        A=fun_exc_estudantes(A)
-        A = remove_single_occurrences(A)
-        A.fillna('', inplace=True)
-        
-        keys_dict = {}
-        length={}
-        nn=3
-        for i in range(nn):
-            s = A.columns[i]
-            op = list(A[A.columns[i]].unique())
-            options = st.multiselect(
-                label=f"{s}",
-                options = op,
-                default=None,
-            )
-            keys_dict[s]=options
-            length[s]=len(options)
-
-        keys=keys_dict.copy()
-        for nam,opt in keys_dict.items():
-            print(nam,opt)
-            if len(opt)==0:
+    keys=keys_dict.copy()
+    for nam,opt in keys_dict.items():
+        print(nam,opt)
+        if len(opt)==0:
+            keys.pop(nam)
+        for k in opt:
+            if 'Tod' in k:
                 keys.pop(nam)
-            for k in opt:
-                if 'Tod' in k:
-                    keys.pop(nam)
-               
-           #df_selected=X.copy()    
-        st.markdown('Parâmetros selecionados:')    
-        if len(keys)>0:    
-            q=''
-            for nam,opt in keys.items():
-                #print(nam)
-                s='('
-                for i,k in enumerate(opt):
-                    #print('\t\t--',k)
-                    s+=f'{nam}=="{k}"'
-                    if i<len(opt)-1:
-                        s+=' | '
-                
-                s+=')'
-                #print(s)
-                q+=s+'&'
-                    #aux=X.query(f'{nam}=="{k}"', inplace=True)
-                    #st.metric(label=nam+':\t', value=k, delta="")
-            df_selected = A.query(q[:-1])
-        else:
-            df_selected = A.copy()                            
-
-
-        if len(df_selected)==1:
-                df_selected.drop(labels=df_selected.index[0],axis=0, inplace=True)
-                
-        col = st.columns(1)
-        #for i in range(nn):
-        #    s, v = list(length.keys())[i], list(length.values())[i]
-        #    col[i].metric(label=s, value=v, delta="")
-
-        col[0].metric(label='Respondentes', value=len(df_selected), delta="")
-        
-        
+           
+       #df_selected=X.copy()    
+    st.markdown('Parâmetros selecionados:')    
+    if len(keys)>0:    
+        q=''
+        for nam,opt in keys.items():
+            #print(nam)
+            s='('
+            for i,k in enumerate(opt):
+                #print('\t\t--',k)
+                s+=f'{nam}=="{k}"'
+                if i<len(opt)-1:
+                    s+=' | '
             
-        Q = transform_questions_to_dataframe(questions)
-        Q = include_subquestion(df_selected,Q, uploaded_file)
-        
-        st.title("Question and Subquestion Analysis")
-        
-        if uploaded_file is not None:
-            df = pd.read_csv(uploaded_file)
-    
-            question_data_values = df['question_data'].unique()
+            s+=')'
+            #print(s)
+            q+=s+'&'
+                #aux=X.query(f'{nam}=="{k}"', inplace=True)
+                #st.metric(label=nam+':\t', value=k, delta="")
+        df_selected = A.query(q[:-1])
+    else:
+        df_selected = A.copy()                            
+
+
+    if len(df_selected)==1:
+            df_selected.drop(labels=df_selected.index[0],axis=0, inplace=True)
             
-            for q_data in question_data_values:
-                create_horizontal_stacked_bar_plots_percentage_data(df, q_data)
+    col = st.columns(1)
+    #for i in range(nn):
+    #    s, v = list(length.keys())[i], list(length.values())[i]
+    #    col[i].metric(label=s, value=v, delta="")
 
-    # Content for the "Servidores" tab
-    with tab2:
-        st.header("Servidores")
-        st.write("Content for Servidores tab goes here.")
+    col[0].metric(label='Respondentes', value=len(df_selected), delta="")
+
     
-        cod_path = './data/2024/Códigos_servidores.csv'
-        file_path = f'./data/{ano_selecionado}/Servidores_dados_{ano_selecionado}.csv'
-        uploaded_file = 'questions_and_subquestions_servidores.csv'
 
-
-        questions = extract_questions_and_subquestions(cod_path)
-        A = pd.read_csv(file_path, sep=';', keep_default_na=False)
-        A=fun_exc_servidores(A)
-        A = remove_single_occurrences(A)
-        A.fillna('', inplace=True)
         
-        keys_dict = {}
-        length={}
-        nn=3
-        for i in range(nn):
-            s = A.columns[i]
-            op = list(A[A.columns[i]].unique())
-            options = st.multiselect(
-                label=f"{s}",
-                options = op,
-                default=None,
+    Q = transform_questions_to_dataframe(questions)
+    Q = include_subquestion(df_selected,Q, uploaded_file)
+    dic_q = dict(zip(Q['subquestions'].values,Q['text'].values))
+
+  
+    question_data_values = Q['question_data'].unique()
+    for question_data in question_data_values:
+        #print(f"### - {question_data}")
+        # Filter data for the current question_data
+        question_data_df = Q[Q['question_data'] == question_data]
+        cols=list(question_data_df['subquestions'].unique())
+        print('\n', cols)
+       
+        B=df_selected[cols].replace(repl0).select_dtypes(include=['number'])
+        satisfaction_index = (B.sum(skipna=True)/B.count()*100).round(2)
+        satisfaction_index.index = [dic_q[i] for i in satisfaction_index.index]
+        satisfaction_index = pd.DataFrame(satisfaction_index, columns = ['Indice de Satisfação (\%)'])
+        if len(satisfaction_index)>0:
+            st.write(f"### - {question_data}")
+            st.table(
+                satisfaction_index.style.applymap(
+                    color_coding_change_flag_2, #subset=NPS.columns.drop('Ambiente'),
+                ).set_table_styles(styles).format("{:.1f}"),
+                #height=1200,
+                #hide_index=False,
+                #use_container_width=True,
             )
-            keys_dict[s]=options
-            length[s]=len(options)
 
-        keys=keys_dict.copy()
-        for nam,opt in keys_dict.items():
-            print(nam,opt)
-            if len(opt)==0:
-                keys.pop(nam)
-            for k in opt:
-                if 'Tod' in k:
-                    keys.pop(nam)
+
+    B=df_selected[list(dic_q.keys())].replace(repl0).select_dtypes(include=['number'])
+    satisfaction_index = (B.sum(skipna=True)/B.count()*100).round(2)
+    satisfaction_index.index = [dic_q[i] for i in satisfaction_index.index]
+    satisfaction_index = pd.DataFrame(satisfaction_index, columns = ['Indice de Satisfação (\%)'])
+    #satisfaction_index['Item avaliado'] = [dic_q[i] for i in satisfaction_index.index]
+    #satisfaction_index = satisfaction_index[['Item avaliado','Indice de Satisfação (\%)']]
+    
+    #st.dataframe(satisfaction_index,use_container_width=True,hide_index=False)
+    #st.bar_chart(satisfaction_index)
+    st.title("Resumo dos indicadores")    
+    st.download_button(
+        label="📁 Baixar o resumo como arquivo CSV",
+        data=satisfaction_index.to_csv(index=True, sep=',').encode('utf-8'),
+        file_name=f'indice_satisfacao_resumo_selecao_{perfil_selecionado}_{ano_selecionado}.csv'.lower(),
+        mime='text/csv'
+    )
+    
+    
+    
+    #print(satisfaction_index)
+    st.table(
+        satisfaction_index.style.applymap(
+            color_coding_change_flag_2, #subset=NPS.columns.drop('Ambiente'),
+        ).set_table_styles(styles).format("{:.1f}"),
+        #height=1200,
+        #hide_index=False,
+        #use_container_width=True,
+    )    
+    #with tab2:
+    #     st.header("Comparação")
+    #     st.write("Content for Servidores tab goes here.")
+    
+    #     cod_path = './data/2024/Códigos_servidores.csv'
+    #     file_path = f'./data/{ano_selecionado}/Servidores_dados_{ano_selecionado}.csv'
+    #     uploaded_file = 'questions_and_subquestions_servidores.csv'
+
+
+    #     questions = extract_questions_and_subquestions(cod_path)
+    #     A = pd.read_csv(file_path, sep=';', keep_default_na=False)
+    #     A=fun_exc_servidores(A)
+    #     A = remove_single_occurrences(A)
+    #     A.fillna('', inplace=True)
+    #     A.replace(repl, inplace=True)
+        
+    #     keys_dict = {}
+    #     length={}
+    #     nn=3
+    #     for i in range(nn):
+    #         s = A.columns[i]
+    #         op = list(A[A.columns[i]].unique())
+    #         options = st.multiselect(
+    #             label=f"{s}",
+    #             options = op,
+    #             default=None,
+    #         )
+    #         keys_dict[s]=options
+    #         length[s]=len(options)
+
+    #     keys=keys_dict.copy()
+    #     for nam,opt in keys_dict.items():
+    #         print(nam,opt)
+    #         if len(opt)==0:
+    #             keys.pop(nam)
+    #         for k in opt:
+    #             if 'Tod' in k:
+    #                 keys.pop(nam)
                
-           #df_selected=X.copy()    
-        st.markdown('Parâmetros selecionados:')    
-        if len(keys)>0:    
-            q=''
-            for nam,opt in keys.items():
-                #print(nam)
-                s='('
-                for i,k in enumerate(opt):
-                    #print('\t\t--',k)
-                    s+=f'{nam}=="{k}"'
-                    if i<len(opt)-1:
-                        s+=' | '
+    #        #df_selected=X.copy()    
+    #     st.markdown('Parâmetros selecionados:')    
+    #     if len(keys)>0:    
+    #         q=''
+    #         for nam,opt in keys.items():
+    #             #print(nam)
+    #             s='('
+    #             for i,k in enumerate(opt):
+    #                 #print('\t\t--',k)
+    #                 s+=f'{nam}=="{k}"'
+    #                 if i<len(opt)-1:
+    #                     s+=' | '
                 
-                s+=')'
-                #print(s)
-                q+=s+'&'
-                    #aux=X.query(f'{nam}=="{k}"', inplace=True)
-                    #st.metric(label=nam+':\t', value=k, delta="")
-            df_selected = A.query(q[:-1])
-        else:
-            df_selected = A.copy()                            
+    #             s+=')'
+    #             #print(s)
+    #             q+=s+'&'
+    #                 #aux=X.query(f'{nam}=="{k}"', inplace=True)
+    #                 #st.metric(label=nam+':\t', value=k, delta="")
+    #         df_selected = A.query(q[:-1])
+    #     else:
+    #         df_selected = A.copy()                            
 
 
-        if len(df_selected)==1:
-                df_selected.drop(labels=df_selected.index[0],axis=0, inplace=True)
+    #     if len(df_selected)==1:
+    #             df_selected.drop(labels=df_selected.index[0],axis=0, inplace=True)
                 
-        col = st.columns(1)
-        #for i in range(nn):
-        #    s, v = list(length.keys())[i], list(length.values())[i]
-        #    col[i].metric(label=s, value=v, delta="")
+    #     col = st.columns(1)
+    #     #for i in range(nn):
+    #     #    s, v = list(length.keys())[i], list(length.values())[i]
+    #     #    col[i].metric(label=s, value=v, delta="")
 
-        col[0].metric(label='Respondentes', value=len(df_selected), delta="")
+    #     col[0].metric(label='Respondentes', value=len(df_selected), delta="")
         
         
             
-        Q = transform_questions_to_dataframe(questions)
-        Q = include_subquestion(df_selected,Q, uploaded_file)
+    #     Q = transform_questions_to_dataframe(questions)
+    #     Q = include_subquestion(df_selected,Q, uploaded_file)
 
-        st.title("Question and Subquestion Analysis")
+    #     st.title("Question and Subquestion Analysis")
         
-        if uploaded_file is not None:
-            df = pd.read_csv(uploaded_file)
+    #     if uploaded_file is not None:
+    #         df = pd.read_csv(uploaded_file)
 
-            question_data_values = df['question_data'].unique()
+    #         question_data_values = df['question_data'].unique()
             
-            for q_data in question_data_values:
-                create_horizontal_stacked_bar_plots_percentage_data(df, q_data)
+    #         for q_data in question_data_values:
+    #             create_horizontal_stacked_bar_plots_percentage_data(df, q_data)
     
     
 
@@ -649,3 +740,5 @@ def main():
 if __name__ == "__main__":
     main()        
         
+
+#%%
