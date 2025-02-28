@@ -568,7 +568,7 @@ def main():
             
             print(c)
             if len(c)>0:
-                st.write(f"### - {question_data}")
+                st.write(f"### - {i}")
                 st.table(
                     c.style.applymap(
                         color_coding_change_flag_2, #subset=NPS.columns.drop('Ambiente'),
