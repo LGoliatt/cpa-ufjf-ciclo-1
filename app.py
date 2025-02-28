@@ -69,8 +69,11 @@ def remove_single_occurrences(df,n=1):
 
 def include_subquestion(A,Q, uploaded_file):
     l=[]
-    for c in Q['subquestions'].values:
-        l.append(list(A[c].values))
+    for c in Q['subquestions'].values:        
+         if c in A.columns:
+            l.append(list(A[c].values))
+         else:
+            Q=Q[Q['subquestions']!=c]
         
         
     Q['data']=l 
@@ -308,7 +311,8 @@ def fun_exc_estudantes(A):
     dic_exc={}
     dic_exc[ 'Area'						]=	'Unidade'
     dic_exc[ 'Campus'					]=	'Campus'
-    dic_exc[ 'Nivel'					]=	'Nivelcurso'
+    dic_exc[ 'Nivel'					]=	'Perfil'
+    dic_exc[ 'Nivelcurso'	    		]=	'Perfil'
     dic_exc[ 'Avaliasetores[PROAE]'		]=	'AvaliaSetores[PROAE]'
     dic_exc[ 'Avaliasetores[PROCULT]'	]=	'AvaliaSetores[PRCUL]'
     dic_exc[ 'Avaliasetores[PROEX]'		]=	'AvaliaSetores[PROEX]'
@@ -594,12 +598,13 @@ def main():
         A = pd.read_csv(file_path, sep=';', keep_default_na=False)
         A=fun_exc[perfil_selecionado](A)    
         A = remove_single_occurrences(A)
-        A.fillna('', inplace=True)       
+        A.fillna('', inplace=True)     
+        A.drop(['Unidade','LOTACAO'], axis=1, errors='ignore', inplace=True)
         #A.replace(repl, inplace=True)
         
         keys_dict = {}
         length={}
-        nn=3
+        nn=2
         for i in range(nn):
             s = A.columns[i]
             op = list(A[A.columns[i]].unique())
@@ -637,8 +642,8 @@ def main():
                 s+=')'
                 #print(s)
                 q+=s+'&'
-                    #aux=X.query(f'{nam}=="{k}"', inplace=True)
-                    #st.metric(label=nam+':\t', value=k, delta="")
+                #aux=X.query(f'{nam}=="{k}"', inplace=True)
+                #st.metric(label=nam+':\t', value=k, delta="")
             df_selected = A.query(q[:-1])
         else:
             df_selected = A.copy()                            
@@ -738,10 +743,12 @@ def main():
          A = remove_single_occurrences(A)
          A.fillna('', inplace=True)       
          A.replace(repl, inplace=True)
+         A.drop(['Unidade','LOTACAO'], axis=1, errors='ignore', inplace=True)
+
          
          keys_dict = {}
          length={}
-         nn=3
+         nn=2
          for i in range(nn):
              s = A.columns[i]
              op = list(A[A.columns[i]].unique())
