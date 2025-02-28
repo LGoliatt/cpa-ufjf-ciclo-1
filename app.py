@@ -90,8 +90,6 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import altair as alt
 
-
-
 # Function to create horizontal stacked bar charts for each subquestion
 def create_stacked_bar_charts(df, question_id):
     st.write(f"### Question ID: {question_id}")
@@ -167,7 +165,7 @@ def create_stacked_bar_plots(df, question_id):
     chart = alt.Chart(plot_df).mark_bar().encode(
         x=alt.X('subquestions:N', title='Subquestions'),
         y=alt.Y('count:Q', title='Count'),
-        color=alt.Color('data:N', title='Response'),
+        color=alt.Color('data:N', title='Resposta'),
         tooltip=['subquestions', 'data', 'count']
     ).properties(
         title=f"Response Distribution for Question ID: {question_id}"
@@ -194,7 +192,7 @@ def create_horizontal_stacked_bar_plots(df, question_id):
     chart = alt.Chart(plot_df).mark_bar().encode(
         y=alt.Y('subquestions:N', title='Subquestions'),  # Subquestions on the y-axis
         x=alt.X('count:Q', title='Count'),  # Count on the x-axis
-        color=alt.Color('data:N', title='Response'),  # Stack by response type
+        color=alt.Color('data:N', title='Resposta'),  # Stack by response type
         tooltip=['subquestions', 'data', 'count']  # Add tooltips for interactivity
     ).properties(
         title=f"Response Distribution for Question ID: {question_id}"
@@ -225,8 +223,8 @@ def create_horizontal_stacked_bar_plots_percentage(df, question_id):
     # Create a horizontal stacked Altair bar chart with percentages
     chart = alt.Chart(plot_df).mark_bar().encode(
         y=alt.Y('subquestions:N', title='Subquestions'),  # Subquestions on the y-axis
-        x=alt.X('percentage:Q', title='Percentage (%)'),  # Percentage on the x-axis
-        color=alt.Color('data:N', title='Response'),  # Stack by response type
+        x=alt.X('percentage:Q', title='Porcentagem (%)'),  # Percentage on the x-axis
+        color=alt.Color('data:N', title='Resposta'),  # Stack by response type
         tooltip=['subquestions', 'data', 'percentage:Q']  # Add tooltips for interactivity
     ).properties(
         title=f"Response Distribution for Question ID: {question_id} (Percentage)"
@@ -288,8 +286,8 @@ def create_horizontal_stacked_bar_plots_percentage_data(df, question_data):
     # Create a horizontal stacked Altair bar chart with percentages
     chart = alt.Chart(plot_df).mark_bar().encode(
         y=alt.Y('text:N', title='Text', axis=alt.Axis(labelLimit=200)),  # Text on the y-axis with increased label limit
-        x=alt.X('percentage:Q', title='Percentage (%)', scale=alt.Scale(domain=[0, 100])),  # Percentage on the x-axis
-        color=alt.Color('data:N', title='Response', legend=alt.Legend(orient='bottom')),  # Stack by response type
+        x=alt.X('percentage:Q', title='Porcentagem (%)', scale=alt.Scale(domain=[0, 100])),  # Percentage on the x-axis
+        color=alt.Color('data:N', title='Resposta', legend=alt.Legend(orient='bottom')),  # Stack by response type
         tooltip=['text', 'data', alt.Tooltip('percentage:Q', format='.2f')]  # Add tooltips for interactivity
     )#.properties(
     #    title=f"Response Distribution for - {question_data} (Percentage)",
@@ -491,14 +489,13 @@ repl0={
 css = '''
 <style>
     .stTabs [data-baseweb="tab-list"] button [data-testid="stMarkdownContainer"] p {
-    font-size:2rem;
+    font-size:3rem;
     }
 </style>
 '''
 
 #st.set_page_config(layout="wide")  # this needs to be the first Streamlit command
 st.markdown(css, unsafe_allow_html=True)
-
 
 # Streamlit app
 def main():
@@ -605,14 +602,16 @@ def main():
         keys_dict = {}
         length={}
         nn=2
-        for i in range(nn):
-            s = A.columns[i]
-            op = list(A[A.columns[i]].unique())
+        cols=sorted(A.columns[:nn])
+        for s in cols:
+            #s = A.columns[i]
+            #op = list(A[A.columns[i]].unique())
+            op = list(A[s].unique())
             options = st.multiselect(
                 label=f"{s}",
                 options = op,
                 default=None,
-                key=f'res-{i}',
+                key=f'res-{s}',
             )
             keys_dict[s]=options
             length[s]=len(options)
@@ -749,14 +748,16 @@ def main():
          keys_dict = {}
          length={}
          nn=2
-         for i in range(nn):
-             s = A.columns[i]
-             op = list(A[A.columns[i]].unique())
+         cols=sorted(A.columns[:nn])
+         for s in cols:
+             #s = A.columns[i]
+             #op = list(A[A.columns[i]].unique())
+             op = list(A[s].unique())
              options = st.multiselect(
                  label=f"{s}",
                  options = op,
                  default=None,
-                 key=f'dados-{i}',
+                 key=f'dados-{s}',
              )
              keys_dict[s]=options
              length[s]=len(options)
