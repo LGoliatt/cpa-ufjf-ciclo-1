@@ -515,7 +515,7 @@ def main():
         } 
     
 
-    tab1, tab2 = st.tabs(["Resultados", "Comparação"])
+    tab1, tab2, tab3 = st.tabs(["Resultados", "Comparação", 'Dados'])
     with tab2:
     
         anos = listar_anos(pasta_dados)[::-1]
@@ -607,6 +607,7 @@ def main():
                 label=f"{s}",
                 options = op,
                 default=None,
+                key=f'res-{i}',
             )
             keys_dict[s]=options
             length[s]=len(options)
@@ -719,92 +720,94 @@ def main():
             #use_container_width=True,
         )    
     
-    #with tab2:
-    #     st.header("Comparação")
-    #     st.write("Content for Servidores tab goes here.")
-    
-    #     cod_path = './data/2024/Códigos_servidores.csv'
-    #     file_path = f'./data/{ano_selecionado}/Servidores_dados_{ano_selecionado}.csv'
-    #     uploaded_file = 'questions_and_subquestions_servidores.csv'
-
-
-    #     questions = extract_questions_and_subquestions(cod_path)
-    #     A = pd.read_csv(file_path, sep=';', keep_default_na=False)
-    #     A=fun_exc_servidores(A)
-    #     A = remove_single_occurrences(A)
-    #     A.fillna('', inplace=True)
-    #     A.replace(repl, inplace=True)
+    with tab3:
+         st.header("Dados")
+         #perfil_selecionado = st.radio("Escolha o Perfil", ['Estudantes', 'Servidores'])
+         ano_selecionado = st.radio("Escolha o ano de referência", anos)
+         # Exibe os arquivos dentro da pasta selecionada
+         caminho_pasta_ano = os.path.join(pasta_dados, ano_selecionado)
         
-    #     keys_dict = {}
-    #     length={}
-    #     nn=3
-    #     for i in range(nn):
-    #         s = A.columns[i]
-    #         op = list(A[A.columns[i]].unique())
-    #         options = st.multiselect(
-    #             label=f"{s}",
-    #             options = op,
-    #             default=None,
-    #         )
-    #         keys_dict[s]=options
-    #         length[s]=len(options)
-
-    #     keys=keys_dict.copy()
-    #     for nam,opt in keys_dict.items():
-    #         print(nam,opt)
-    #         if len(opt)==0:
-    #             keys.pop(nam)
-    #         for k in opt:
-    #             if 'Tod' in k:
-    #                 keys.pop(nam)
-               
-    #        #df_selected=X.copy()    
-    #     st.markdown('Parâmetros selecionados:')    
-    #     if len(keys)>0:    
-    #         q=''
-    #         for nam,opt in keys.items():
-    #             #print(nam)
-    #             s='('
-    #             for i,k in enumerate(opt):
-    #                 #print('\t\t--',k)
-    #                 s+=f'{nam}=="{k}"'
-    #                 if i<len(opt)-1:
-    #                     s+=' | '
+         
+         cod_path = f'./data/2024/Códigos_{perfil_selecionado}.csv'
+         file_path = f'./data/{ano_selecionado}/{perfil_selecionado}_dados_{ano_selecionado}.csv'
+         uploaded_file = f'questions_and_subquestions_{perfil_selecionado}.csv'
+     
+         questions = extract_questions_and_subquestions(cod_path)
+         A = pd.read_csv(file_path, sep=';', keep_default_na=False)
+         A=fun_exc[perfil_selecionado](A)    
+         A = remove_single_occurrences(A)
+         A.fillna('', inplace=True)       
+         A.replace(repl, inplace=True)
+         
+         keys_dict = {}
+         length={}
+         nn=3
+         for i in range(nn):
+             s = A.columns[i]
+             op = list(A[A.columns[i]].unique())
+             options = st.multiselect(
+                 label=f"{s}",
+                 options = op,
+                 default=None,
+                 key=f'dados-{i}',
+             )
+             keys_dict[s]=options
+             length[s]=len(options)
+     
+         keys=keys_dict.copy()
+         for nam,opt in keys_dict.items():
+             print(nam,opt)
+             if len(opt)==0:
+                 keys.pop(nam)
+             for k in opt:
+                 if 'Tod' in k:
+                     keys.pop(nam)
                 
-    #             s+=')'
-    #             #print(s)
-    #             q+=s+'&'
-    #                 #aux=X.query(f'{nam}=="{k}"', inplace=True)
-    #                 #st.metric(label=nam+':\t', value=k, delta="")
-    #         df_selected = A.query(q[:-1])
-    #     else:
-    #         df_selected = A.copy()                            
+            #df_selected=X.copy()    
+         st.markdown('Parâmetros selecionados:')    
+         if len(keys)>0:    
+             q=''
+             for nam,opt in keys.items():
+                 #print(nam)
+                 s='('
+                 for i,k in enumerate(opt):
+                     #print('\t\t--',k)
+                     s+=f'{nam}=="{k}"'
+                     if i<len(opt)-1:
+                         s+=' | '
+                 
+                 s+=')'
+                 #print(s)
+                 q+=s+'&'
+                     #aux=X.query(f'{nam}=="{k}"', inplace=True)
+                     #st.metric(label=nam+':\t', value=k, delta="")
+             df_selected = A.query(q[:-1])
+         else:
+             df_selected = A.copy()                            
+     
+     
+         if len(df_selected)==1:
+                 df_selected.drop(labels=df_selected.index[0],axis=0, inplace=True)
+                 
+         col = st.columns(1)
+         #for i in range(nn):
+         #    s, v = list(length.keys())[i], list(length.values())[i]
+         #    col[i].metric(label=s, value=v, delta="")
+     
+         col[0].metric(label='Respondentes', value=len(df_selected), delta="")
+     
+         Q = transform_questions_to_dataframe(questions)
+         Q = include_subquestion(df_selected,Q, uploaded_file)
 
-
-    #     if len(df_selected)==1:
-    #             df_selected.drop(labels=df_selected.index[0],axis=0, inplace=True)
-                
-    #     col = st.columns(1)
-    #     #for i in range(nn):
-    #     #    s, v = list(length.keys())[i], list(length.values())[i]
-    #     #    col[i].metric(label=s, value=v, delta="")
-
-    #     col[0].metric(label='Respondentes', value=len(df_selected), delta="")
+         #st.title("Question and Subquestion Analysis")
         
-        
+         if uploaded_file is not None:
+             df = pd.read_csv(uploaded_file)
+
+             question_data_values = df['question_data'].unique()
             
-    #     Q = transform_questions_to_dataframe(questions)
-    #     Q = include_subquestion(df_selected,Q, uploaded_file)
-
-    #     st.title("Question and Subquestion Analysis")
-        
-    #     if uploaded_file is not None:
-    #         df = pd.read_csv(uploaded_file)
-
-    #         question_data_values = df['question_data'].unique()
-            
-    #         for q_data in question_data_values:
-    #             create_horizontal_stacked_bar_plots_percentage_data(df, q_data)
+             for q_data in question_data_values:
+                 create_horizontal_stacked_bar_plots_percentage_data(df, q_data)
     
     
     st.markdown('''
