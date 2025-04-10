@@ -4,6 +4,20 @@ import pandas as pd
 import csv
 
 def extract_questions_and_subquestions(file_path):
+    """
+Extracts questions and their subquestions from a tab-separated file.
+
+    Args:
+        file_path: The path to the file containing question data.  The file is expected 
+            to have rows starting with 'Q' for questions and 'SQ' for subquestions. 
+            Each row should be tab separated.
+
+    Returns:
+        dict: A dictionary where keys are question IDs and values are dictionaries 
+            containing the question text and a list of its subquestions. Each subquestion
+            is represented as a dictionary with 'id' and 'text' keys.  Returns an empty
+            dictionary if the file is empty or does not contain valid question data.
+    """
     questions = {}
     current_question = None
 
@@ -32,6 +46,20 @@ def extract_questions_and_subquestions(file_path):
     return questions
 
 def transform_questions_to_dataframe(questions):
+    
+    """
+Transforms a dictionary of questions into a Pandas DataFrame.
+
+    Args:
+        questions (dict): A dictionary where keys are question IDs and values 
+                          are dictionaries containing question data, including text
+                          and potentially subquestions.
+
+    Returns:
+        pd.DataFrame: A DataFrame representing the questions and their 
+                      subquestions, with columns for 'question_id', 
+                      'question_data', 'subquestions', and 'text'.
+    """
     
     Q=[]
     # Print the extracted questions and subquestions
@@ -67,6 +95,16 @@ def transform_questions_to_dataframe(questions):
 
 
 def remove_single_occurrences(df,n=1):
+    """
+Removes values that appear a specified number of times or less in each column of a DataFrame.
+
+    Args:
+        df: The input DataFrame.
+        n: The maximum number of occurrences allowed for a value to be kept. Defaults to 1.
+
+    Returns:
+        DataFrame: The modified DataFrame with single (or fewer) occurrences replaced by None.
+    """
     for column in df.columns:
         value_counts = df[column].value_counts()
         to_remove = value_counts[value_counts <= n].index
@@ -74,6 +112,17 @@ def remove_single_occurrences(df,n=1):
     return df
 
 def include_subquestion(A,Q, uploaded_file):
+    """
+Includes subquestion data from A into Q and saves to a CSV file.
+
+    Args:
+        A: Dictionary containing answer data.
+        Q: Dictionary containing question data with 'subquestions' key.
+        uploaded_file: Path to the output CSV file.
+
+    Returns:
+        Q: The updated question dictionary, which is also saved as a CSV.
+    """
     l=[]
     for c in Q['subquestions'].values:
         l.append(list(A[c].values))
@@ -97,6 +146,16 @@ import altair as alt
 
 # Function to create horizontal stacked bar charts for each subquestion
 def create_stacked_bar_charts(df, question_id):
+    """
+Creates stacked bar charts for each subquestion within a given question.
+
+    Args:
+        df: The input DataFrame containing the data.
+        question_id: The ID of the question to analyze.
+
+    Returns:
+        None
+    """
     st.write(f"### Question ID: {question_id}")
     subquestions = df[df['question_id'] == question_id]['subquestions'].unique()
     
@@ -129,6 +188,16 @@ def create_stacked_bar_charts(df, question_id):
         
 # Function to create bar plots for each subquestion
 def create_barplots(df, question_id):
+    """
+Creates bar plots for each subquestion within a given question.
+
+    Args:
+        df: The input DataFrame containing the data.
+        question_id: The ID of the question to analyze.
+
+    Returns:
+        None
+    """
     st.write(f"### Question ID: {question_id}")
     subquestions = df[df['question_id'] == question_id]['subquestions'].unique()
     
@@ -154,6 +223,16 @@ def create_barplots(df, question_id):
         st.pyplot(fig)
 
 def create_stacked_bar_plots(df, question_id):
+    """
+Creates a stacked bar plot visualizing response distribution for a given question.
+
+    Args:
+        df: The input DataFrame containing the data.
+        question_id: The ID of the question to visualize.
+
+    Returns:
+        None
+    """
     st.write(f"### Question ID: {question_id}")
     
     # Filter data for the current question_id
@@ -181,6 +260,16 @@ def create_stacked_bar_plots(df, question_id):
 
 
 def create_horizontal_stacked_bar_plots(df, question_id):
+    """
+Creates a horizontal stacked bar plot for a given question ID.
+
+    Args:
+        df: The input DataFrame containing the data.
+        question_id: The ID of the question to visualize.
+
+    Returns:
+        None
+    """
     st.write(f"### Question ID: {question_id}")
     
     # Filter data for the current question_id
@@ -207,6 +296,16 @@ def create_horizontal_stacked_bar_plots(df, question_id):
     st.altair_chart(chart, use_container_width=True)
 
 def create_horizontal_stacked_bar_plots_percentage(df, question_id):
+    """
+Creates a horizontal stacked bar chart showing the percentage distribution of responses for a given question.
+
+    Args:
+        df: The input DataFrame containing question data.
+        question_id: The ID of the question to visualize.
+
+    Returns:
+        None
+    """
     st.write(f"### Question ID: {question_id}")
     
     # Filter data for the current question_id
@@ -239,6 +338,16 @@ def create_horizontal_stacked_bar_plots_percentage(df, question_id):
     st.altair_chart(chart, use_container_width=True)
 
 def create_percentage_table(df, question_data):
+    """
+Creates and displays a percentage table for a given question's responses.
+
+    Args:
+        df: The input DataFrame containing the data.
+        question_data: The specific question to analyze.
+
+    Returns:
+        None
+    """
     st.write(f"### Question Data: {question_data}")
     
     # Filter data for the current question_data
@@ -270,6 +379,16 @@ def create_percentage_table(df, question_data):
 
 # Function to create horizontal stacked Altair bar plots with percentages for the "text" column
 def create_horizontal_stacked_bar_plots_percentage_data(df, question_data):
+    """
+Creates a horizontal stacked bar chart showing the percentage distribution of responses for a given question.
+
+    Args:
+        df: The input DataFrame containing question data and responses.
+        question_data: The specific question to analyze.
+
+    Returns:
+        None
+    """
     st.write(f"### Question Data: {question_data}")
     
     # Filter data for the current question_data
@@ -312,6 +431,21 @@ def create_horizontal_stacked_bar_plots_percentage_data(df, question_data):
     
 # Streamlit app
 def main():
+    
+    """
+Creates a Streamlit app with two tabs for student and server data analysis.
+
+    This application displays content related to students in one tab and 
+    server information in another. It performs question and subquestion 
+    analysis using data from CSV files, generating horizontal stacked bar plots 
+    to visualize the results.
+
+    Args:
+        None
+
+    Returns:
+        None
+    """
     
     import streamlit as st
     
