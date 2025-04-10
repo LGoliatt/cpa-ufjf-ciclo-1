@@ -1,0 +1,4 @@
+Este repositório apresenta os código que deu suporte a análise para o Relatório de Autoavaliação Institucional (RAAI) referente ao ano base de 2024, o qual contempla os resultados obtidos na primeira etapa do Plano de Autoavaliação Institucional do triênio 2024-2026 da Universidade Federal de Juiz de Fora (UFJF).
+
+O referido Plano de Autoavaliação, aprovado pela Comissão Própria de Avaliação (CPA) da UFJF, propõe a elaboração e aplicação de questionários específicos de autoavaliação cujo público-alvo são as comunidades acadêmica interna (servidores e estudantes) e externa
+(sociedade civil) à UFJF, a depender da etapa de avaliação. Em conformidade com a Nota Técnica Inep/Daes/Conaes n° 65, de 9 de outubro de 2014, a consulta à comunidade foi organizada dentro de um Ciclo Avaliativo, a ser cumprido em 3 etapas.
