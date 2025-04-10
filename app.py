@@ -5,6 +5,19 @@ import csv
 import os
 
 def extract_questions_and_subquestions(file_path):
+    """
+Extracts questions and their subquestions from a tab-separated file.
+
+    Args:
+        file_path: The path to the file containing question data.  The file is expected 
+            to have rows starting with 'Q' for questions and 'SQ' for subquestions.
+
+    Returns:
+        dict: A dictionary where keys are question IDs and values are dictionaries 
+            containing the question text and a list of its subquestions. Each subquestion
+            is represented as a dictionary with 'id' and 'text' keys.  Returns an empty
+            dictionary if the file is empty or does not contain valid question data.
+    """
     questions = {}
     current_question = None
 
@@ -34,6 +47,20 @@ def extract_questions_and_subquestions(file_path):
 
 def transform_questions_to_dataframe(questions):
     
+    """
+Transforms a dictionary of questions into a Pandas DataFrame.
+
+    Args:
+        questions (dict): A dictionary where keys are question IDs and values 
+                          are dictionaries containing question data, including text
+                          and potentially subquestions.
+
+    Returns:
+        pd.DataFrame: A DataFrame representing the questions and their 
+                      subquestions, with columns for 'question_id', 
+                      'question_data', 'subquestions', and 'text'.
+    """
+    
     Q=[]
     # Print the extracted questions and subquestions
     for question_id, question_data in questions.items():
@@ -61,6 +88,16 @@ def transform_questions_to_dataframe(questions):
 
 
 def remove_single_occurrences(df,n=1):
+    """
+Removes values that appear a specified number of times or less in each column of a DataFrame.
+
+    Args:
+        df: The input DataFrame.
+        n: The maximum number of occurrences allowed for a value to be kept. Defaults to 1.
+
+    Returns:
+        DataFrame: The modified DataFrame with single (or fewer) occurrences replaced by None.
+    """
     for column in df.columns:
         value_counts = df[column].value_counts()
         to_remove = value_counts[value_counts <= n].index
@@ -68,6 +105,22 @@ def remove_single_occurrences(df,n=1):
     return df
 
 def include_subquestion(A,Q, uploaded_file):
+    """
+Includes subquestions from Q that are columns in A and saves to a CSV.
+
+    Iterates through the subquestions in Q, checks if they exist as columns in A.
+    If a subquestion is found in A, its values are added to a list.  Subquestions 
+    not present in A are removed from Q. Finally, the resulting data and updated 
+    Q dataframe are saved to a CSV file specified by uploaded_file.
+
+    Args:
+        A: The primary DataFrame containing columns to check against.
+        Q: The DataFrame with 'subquestions' column to filter.
+        uploaded_file: The path for saving the output CSV file.
+
+    Returns:
+        DataFrame: The updated Q DataFrame after filtering and adding data.
+    """
     l=[]
     for c in Q['subquestions'].values:        
          if c in A.columns:
@@ -92,6 +145,16 @@ import altair as alt
 
 # Function to create horizontal stacked bar charts for each subquestion
 def create_stacked_bar_charts(df, question_id):
+    """
+Creates stacked bar charts for each subquestion within a given question.
+
+    Args:
+        df: The input DataFrame containing the data.
+        question_id: The ID of the question to analyze.
+
+    Returns:
+        None
+    """
     st.write(f"### Question ID: {question_id}")
     subquestions = df[df['question_id'] == question_id]['subquestions'].unique()
     
@@ -124,6 +187,16 @@ def create_stacked_bar_charts(df, question_id):
         
 # Function to create bar plots for each subquestion
 def create_barplots(df, question_id):
+    """
+Creates bar plots for each subquestion within a given question.
+
+    Args:
+        df: The input DataFrame containing the data.
+        question_id: The ID of the question to filter by.
+
+    Returns:
+        None
+    """
     st.write(f"### Question ID: {question_id}")
     subquestions = df[df['question_id'] == question_id]['subquestions'].unique()
     
@@ -149,6 +222,16 @@ def create_barplots(df, question_id):
         st.pyplot(fig)
 
 def create_stacked_bar_plots(df, question_id):
+    """
+Creates a stacked bar plot visualizing response distribution for a given question.
+
+    Args:
+        df: The input DataFrame containing the data.
+        question_id: The ID of the question to visualize.
+
+    Returns:
+        None
+    """
     st.write(f"### Question ID: {question_id}")
     
     # Filter data for the current question_id
@@ -176,6 +259,16 @@ def create_stacked_bar_plots(df, question_id):
 
 
 def create_horizontal_stacked_bar_plots(df, question_id):
+    """
+Creates a horizontal stacked bar plot for a given question ID.
+
+    Args:
+        df: The input DataFrame containing the data.
+        question_id: The ID of the question to visualize.
+
+    Returns:
+        None
+    """
     st.write(f"### Question ID: {question_id}")
     
     # Filter data for the current question_id
@@ -202,6 +295,16 @@ def create_horizontal_stacked_bar_plots(df, question_id):
     st.altair_chart(chart, use_container_width=True)
 
 def create_horizontal_stacked_bar_plots_percentage(df, question_id):
+    """
+Creates a horizontal stacked bar chart showing the percentage distribution of responses for a given question.
+
+    Args:
+        df: The input DataFrame containing question data.
+        question_id: The ID of the question to visualize.
+
+    Returns:
+        None
+    """
     st.write(f"### Question ID: {question_id}")
     
     # Filter data for the current question_id
@@ -234,6 +337,16 @@ def create_horizontal_stacked_bar_plots_percentage(df, question_id):
     st.altair_chart(chart, use_container_width=True)
 
 def create_percentage_table(df, question_data):
+    """
+Creates and displays a percentage table for a given question.
+
+    Args:
+        df: The input DataFrame containing the data.
+        question_data: The specific question to analyze.
+
+    Returns:
+        None
+    """
     st.write(f"### - {question_data}")
     
     # Filter data for the current question_data
@@ -265,6 +378,16 @@ def create_percentage_table(df, question_data):
 
 # Function to create horizontal stacked Altair bar plots with percentages for the "text" column
 def create_horizontal_stacked_bar_plots_percentage_data(df, question_data):
+    """
+Creates a horizontal stacked bar chart showing the percentage distribution of responses for a given question.
+
+    Args:
+        df: The input DataFrame containing question data and responses.
+        question_data: The specific question to visualize.
+
+    Returns:
+        None
+    """
     st.write(f"### - {question_data}")
     
     # Filter data for the current question_data
@@ -305,6 +428,23 @@ def create_horizontal_stacked_bar_plots_percentage_data(df, question_data):
 
 
 def fun_exc_estudantes(A):
+    
+    """
+Renames columns in a DataFrame based on a predefined dictionary.
+
+    This function renames the columns of an input DataFrame (A) according to 
+    a mapping defined in the `dic_exc` dictionary. If a column name is not 
+    found in the dictionary, it remains unchanged.  It also ensures that all
+    keys from the dic_exc values are present as columns in the output DataFrame,
+    filling missing ones with None.
+
+    Args:
+        A (pd.DataFrame): The input DataFrame whose columns need to be renamed.
+
+    Returns:
+        pd.DataFrame: A new DataFrame with potentially renamed columns and 
+                      guaranteed presence of all keys from dic_exc values.
+    """
     
     dic_exc={}
     dic_exc[ 'Area'						]=	'Unidade'
@@ -358,6 +498,23 @@ def fun_exc_estudantes(A):
 
 
 def fun_exc_servidores(A):
+    
+    """
+Creates a new DataFrame with standardized column names.
+
+    This function takes a Pandas DataFrame as input and returns a new DataFrame 
+    with potentially renamed columns based on a predefined dictionary `dic_exc`. 
+    If a column name in the input DataFrame exists as a key in `dic_exc`, it's 
+    renamed to the corresponding value. Columns not found in `dic_exc` are kept 
+    as is, and any values from dic_exc that aren't present in the original dataframe
+    are added as new columns with None values.
+
+    Args:
+        A: The input Pandas DataFrame.
+
+    Returns:
+        pd.DataFrame: A new Pandas DataFrame with standardized column names.
+    """
     
     dic_exc={}
     dic_exc['Perfil'        	    ]=	'Perfil'
@@ -433,6 +590,15 @@ def fun_exc_servidores(A):
 
 # Função para listar as pastas (anos) dentro da pasta 'data'
 def listar_anos(diretorio):
+    """
+Lists the years (subdirectories) within a given directory.
+
+    Args:
+        diretorio: The path to the directory to list years from.
+
+    Returns:
+        list[str]: A sorted list of year directories found in the specified directory.
+    """
     # Obtém a lista de pastas dentro da pasta 'data'
     anos = [pasta for pasta in os.listdir(diretorio) if os.path.isdir(os.path.join(diretorio, pasta))]
     return sorted(anos)  # Ordena os anos de forma crescente
@@ -447,6 +613,16 @@ styles = [dict(selector="th", props=[('width', '40px')]),
                               ('vertical-align', 'bottom')])]
 
 def color_coding_change_flag_2(val):
+        """
+Returns a string representing the background color based on the input value.
+
+    Args:
+        val: The input value to determine the color.
+
+    Returns:
+        str: A string formatted as 'background-color: {color}', where color is 
+             'red', 'orange', 'yellow', 'green', or None depending on the value of val.
+    """
         if val==None or val=='':
             color = None
         else:
@@ -499,6 +675,21 @@ st.markdown(css, unsafe_allow_html=True)
 
 # Streamlit app
 def main():
+
+    """
+Main function for the Avalia UFJF 2024 application.
+
+    This function sets up a Streamlit web application to display and analyze
+    evaluation data from students and servers of Universidade Federal de Juiz de Fora.
+    It includes tabs for results, comparison, and raw data exploration, allowing users
+    to filter and visualize satisfaction indices based on selected criteria.
+
+    Args:
+        None
+
+    Returns:
+        None
+    """
 
     st.header("Universidade Federal de Juiz de Fora")
     st.markdown("[**Comissão Própria de Avaliação**](https://www2.ufjf.br/cpa/)")
