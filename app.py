@@ -4,6 +4,22 @@ import pandas as pd
 import csv
 import os
 
+import requests
+import threading
+import time
+
+def wake_self_loop():
+    """Faz ping em si mesmo a cada 30 minutos"""
+    while True:
+        time.sleep(1800)  # 30 minutos
+        try:
+            requests.get("https://cpa-ufjf-ciclo-1.streamlit.app")
+        except:
+            pass
+
+# Iniciar thread de wake-up
+threading.Thread(target=wake_self_loop, daemon=True).start()
+
 def extract_questions_and_subquestions(file_path):
     questions = {}
     current_question = None
